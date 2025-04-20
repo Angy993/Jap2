@@ -217,51 +217,6 @@ document.addEventListener("keydown", function(event) {
 });
 
 window.onload = loadQuestion;
-
-document.getElementById("userInput").addEventListener("keydown", function(event) {
-    if (event.key === "Enter") {
-        checkAnswer();
-    }
-});
-
-document.addEventListener("keydown", function(event) {
-    if (event.key.toLowerCase() === "q") {
-        index++;
-        loadQuestion();
-    }
-});
-
-// DEBUG: visualizzazione forzata delle spiegazioni
-function checkAnswer() {
-    const input = document.getElementById("userInput").value.trim().toLowerCase();
-    const correct = data[index].romaji.toLowerCase();
-
-    if (input === correct) {
-        let result = "<strong>Frase:</strong><br>" + data[index].frase + "<br><em>" + data[index].traduzione + "</em><br>";
-        document.getElementById("result").innerHTML = result;
-
-        let spiegazioni = data[index].spiegazioni;
-        let spiegazioniDiv = "";
-
-        if (spiegazioni && Object.keys(spiegazioni).length > 0) {
-            for (let key in spiegazioni) {
-                const s = spiegazioni[key];
-                spiegazioniDiv += "<div class='explanation'><strong>" + key + "</strong><br>" +
-                                  "<em><strong>Descrizione:</strong></em> " + s.descrizione + "<br>" +
-                                  "<em><strong>Uso:</strong></em> " + s.uso + "<br>" +
-                                  "<em><strong>Esempio:</strong></em> " + s.esempio + "<br>" +
-                                  "<em><strong>Nota:</strong></em> " + s.nota + "</div>";
-            }
-        } else {
-            spiegazioniDiv = "<div class='explanation'>Nessuna spiegazione disponibile.</div>";
-        }
-
-        document.getElementById("spiegazioni").innerHTML = spiegazioniDiv;
-    } else {
-        document.getElementById("result").innerHTML = "<span style='color:red;'>✗ Risposta sbagliata. Riprova.</span>";
-    }
-}
 </script>
-
 </body>
 </html>

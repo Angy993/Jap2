@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz di Romaji - Vocabolario Giapponese</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .question {
+            margin: 15px 0;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        input[type="text"] {
+            padding: 4px;
+            margin-right: 8px;
+        }
+        button {
+            padding: 4px 8px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Quiz: Scrivi il romaji della parola giapponese</h1>
+    <div id="quiz-container"></div>
+
+    <script>
+        const quizData = [
+            { ita: "Mangiare", romaji: "taberu" },
+            { ita: "Bere", romaji: "nomu" },
+            { ita: "Guardare", romaji: "miru" },
+            { ita: "Acqua", romaji: "mizu" },
+            { ita: "Casa", romaji: "ie" },
+            { ita: "Amico", romaji: "tomodachi" },
+            { ita: "Canzone", romaji: "uta" },
+            { ita: "Aspettare", romaji: "matsu" },
+            { ita: "Andare", romaji: "iku" },
+            { ita: "Treno", romaji: "densha" }
+        ];
+
+        const container = document.getElementById('quiz-container');
+
+        quizData.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'question';
+            div.innerHTML = `
+                <label><strong>${item.ita}</strong>: </label>
+                <input type="text" id="input-${index}">
+                <button onclick="checkAnswer(${index}, '${item.romaji}')">Verifica</button>
+                <span id="result-${index}"></span>
+            `;
+            container.appendChild(div);
+        });
+
+        function checkAnswer(index, correctRomaji) {
+            const input = document.getElementById(`input-${index}`).value.trim().toLowerCase();
+            const result = document.getElementById(`result-${index}`);
+            if (input === correctRomaji) {
+                result.textContent = "✓ Corretto!";
+                result.className = "correct";
+            } else {
+                result.textContent = `✗ Sbagliato (corretto: ${correctRomaji})`;
+                result.className = "incorrect";
+            }
+        }
+    </script>
+</body>
+</html>

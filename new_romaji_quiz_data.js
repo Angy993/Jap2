@@ -9,13 +9,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Watashi\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché \"sushi\" è l'oggetto diretto, cioè ciò che subisce l'azione del verbo."
       }
     }
   },
@@ -29,13 +31,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Watashi\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché \"mizu\" è l'oggetto diretto, cioè ciò che subisce l'azione del verbo."
       }
     }
   },
@@ -49,13 +53,15 @@ const data = [
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché \"Anime\" è l'oggetto diretto, cioè ciò che subisce l'azione del verbo."
       },
       "ni": {
         "descrizione": "Particella di direzione/oggetto indiretto.",
         "uso": "Indica direzione o ricevente indiretto.",
         "esempio": "Tomodachi ni aimasu.",
-        "nota": "Si scrive に ma si legge 'ni'."
+        "nota": "Si scrive に ma si legge 'ni'.",
+        "perche": "Perché indica la destinazione o il punto di arrivo dell'azione."
       }
     }
   },
@@ -69,19 +75,22 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Anime\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       },
       "ni": {
         "descrizione": "Particella di direzione/oggetto indiretto.",
         "uso": "Indica direzione o ricevente indiretto.",
         "esempio": "Tomodachi ni aimasu.",
-        "nota": "Si scrive に ma si legge 'ni'."
+        "nota": "Si scrive に ma si legge 'ni'.",
+        "perche": "Perché indica la destinazione o il punto di arrivo dell'azione."
       }
     }
   },
@@ -95,7 +104,8 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Mizu\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       }
     }
   },
@@ -109,25 +119,29 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Watashi\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       },
       "ni": {
         "descrizione": "Particella di direzione/oggetto indiretto.",
         "uso": "Indica direzione o ricevente indiretto.",
         "esempio": "Tomodachi ni aimasu.",
-        "nota": "Si scrive に ma si legge 'ni'."
+        "nota": "Si scrive に ma si legge 'ni'.",
+        "perche": "Perché indica la destinazione o il punto di arrivo dell'azione."
       },
       "ga": {
         "descrizione": "Particella del soggetto.",
         "uso": "Indica il soggetto della frase.",
         "esempio": "Kare ga kuru.",
-        "nota": "Si scrive が e si legge 'ga'."
+        "nota": "Si scrive が e si legge 'ga'.",
+        "perche": "Perché identifica il soggetto principale o qualcosa di nuovo rilevante nella frase."
       }
     }
   },
@@ -141,13 +155,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Gakkou\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       }
     }
   },
@@ -161,13 +177,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Tomodachi\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       }
     }
   },
@@ -181,13 +199,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Kodomo\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       }
     }
   },
@@ -201,13 +221,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Asobi\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       }
     }
   },
@@ -221,19 +243,22 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Watashi\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       },
       "to": {
         "descrizione": "Particella di accompagnamento.",
         "uso": "Indica con chi si fa qualcosa.",
         "esempio": "Tomodachi to hanasu.",
-        "nota": "Si scrive と e si legge 'to'."
+        "nota": "Si scrive と e si legge 'to'.",
+        "perche": "Perché indica la compagnia, con chi si compie l’azione."
       }
     }
   },
@@ -247,19 +272,22 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Watashi\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché \"ongaku\" è l'oggetto diretto, cioè ciò che subisce l'azione del verbo."
       },
       "ga": {
         "descrizione": "Particella del soggetto.",
         "uso": "Indica il soggetto della frase.",
         "esempio": "Kare ga kuru.",
-        "nota": "Si scrive が e si legge 'ga'."
+        "nota": "Si scrive が e si legge 'ga'.",
+        "perche": "Perché identifica il soggetto principale o qualcosa di nuovo rilevante nella frase."
       }
     }
   },
@@ -273,7 +301,8 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Sensei\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       }
     }
   },
@@ -287,13 +316,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Kyou\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       }
     }
   },
@@ -307,13 +338,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Ongaku\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "ga": {
         "descrizione": "Particella del soggetto.",
         "uso": "Indica il soggetto della frase.",
         "esempio": "Kare ga kuru.",
-        "nota": "Si scrive が e si legge 'ga'."
+        "nota": "Si scrive が e si legge 'ga'.",
+        "perche": "Perché identifica il soggetto principale o qualcosa di nuovo rilevante nella frase."
       }
     }
   },
@@ -327,19 +360,22 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Watashi\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché \"nihongo\" è l'oggetto diretto, cioè ciò che subisce l'azione del verbo."
       },
       "ni": {
         "descrizione": "Particella di direzione/oggetto indiretto.",
         "uso": "Indica direzione o ricevente indiretto.",
         "esempio": "Tomodachi ni aimasu.",
-        "nota": "Si scrive に ma si legge 'ni'."
+        "nota": "Si scrive に ma si legge 'ni'.",
+        "perche": "Perché indica la destinazione o il punto di arrivo dell'azione."
       }
     }
   },
@@ -353,13 +389,15 @@ const data = [
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       },
       "ga": {
         "descrizione": "Particella del soggetto.",
         "uso": "Indica il soggetto della frase.",
         "esempio": "Kare ga kuru.",
-        "nota": "Si scrive が e si legge 'ga'."
+        "nota": "Si scrive が e si legge 'ga'.",
+        "perche": "Perché identifica il soggetto principale o qualcosa di nuovo rilevante nella frase."
       }
     }
   },
@@ -373,13 +411,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Watashi\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "ni": {
         "descrizione": "Particella di direzione/oggetto indiretto.",
         "uso": "Indica direzione o ricevente indiretto.",
         "esempio": "Tomodachi ni aimasu.",
-        "nota": "Si scrive に ma si legge 'ni'."
+        "nota": "Si scrive に ma si legge 'ni'.",
+        "perche": "Perché indica la destinazione o il punto di arrivo dell'azione."
       }
     }
   },
@@ -400,13 +440,15 @@ const data = [
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       },
       "to": {
         "descrizione": "Particella di accompagnamento.",
         "uso": "Indica con chi si fa qualcosa.",
         "esempio": "Tomodachi to hanasu.",
-        "nota": "Si scrive と e si legge 'to'."
+        "nota": "Si scrive と e si legge 'to'.",
+        "perche": "Perché indica la compagnia, con chi si compie l’azione."
       }
     }
   },
@@ -420,13 +462,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Watashi\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché \"ryouri\" è l'oggetto diretto, cioè ciò che subisce l'azione del verbo."
       }
     }
   },
@@ -440,7 +484,8 @@ const data = [
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché \"Kaimono\" è l'oggetto diretto, cioè ciò che subisce l'azione del verbo."
       }
     }
   },
@@ -454,13 +499,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Yoru\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       }
     }
   },
@@ -474,19 +521,22 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Watashi\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       },
       "ni": {
         "descrizione": "Particella di direzione/oggetto indiretto.",
         "uso": "Indica direzione o ricevente indiretto.",
         "esempio": "Tomodachi ni aimasu.",
-        "nota": "Si scrive に ma si legge 'ni'."
+        "nota": "Si scrive に ma si legge 'ni'.",
+        "perche": "Perché indica la destinazione o il punto di arrivo dell'azione."
       }
     }
   },
@@ -500,7 +550,8 @@ const data = [
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché \"Hirugohan\" è l'oggetto diretto, cioè ciò che subisce l'azione del verbo."
       }
     }
   },
@@ -514,7 +565,8 @@ const data = [
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché \"Mado\" è l'oggetto diretto, cioè ciò che subisce l'azione del verbo."
       }
     }
   },
@@ -528,7 +580,8 @@ const data = [
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché \"Doa\" è l'oggetto diretto, cioè ciò che subisce l'azione del verbo."
       }
     }
   },
@@ -542,13 +595,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Watashi\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché \"hon\" è l'oggetto diretto, cioè ciò che subisce l'azione del verbo."
       }
     }
   },
@@ -562,7 +617,8 @@ const data = [
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché \"Hon\" è l'oggetto diretto, cioè ciò che subisce l'azione del verbo."
       }
     }
   },
@@ -576,13 +632,15 @@ const data = [
         "descrizione": "Particella del tema.",
         "uso": "Indica l’argomento principale della frase.",
         "esempio": "Watashi wa gakusei desu.",
-        "nota": "Si scrive は ma si legge 'wa'."
+        "nota": "Si scrive は ma si legge 'wa'.",
+        "perche": "Perché \"Konpyuutaa\" è il tema della frase, cioè chi o cosa stiamo descrivendo o di cui parliamo."
       },
       "o": {
         "descrizione": "Particella dell’oggetto diretto.",
         "uso": "Indica ciò che riceve l’azione.",
         "esempio": "Ringo o taberu.",
-        "nota": "Si scrive を ma si legge 'o'."
+        "nota": "Si scrive を ma si legge 'o'.",
+        "perche": "Perché marca l'oggetto diretto, che riceve l'azione del verbo."
       }
     }
   }

@@ -4,7 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Quiz Romaji Avanzato</title>
+    
     <style>
+        h2 {
+            color: #2a5d84;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+        .quiz-container button {
+            background-color: #2a5d84;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .quiz-container button:hover {
+            background-color: #1e3f5a;
+        }
+        .quiz-container input {
+            border: 2px solid #ccc;
+            border-radius: 4px;
+        }
+        .sidebar {
+            font-size: 16px;
+        }
+        .sidebar h3 {
+            color: #2a5d84;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 5px;
+        }
+    
         body {
             font-family: 'Segoe UI', sans-serif;
             background: #f0f4f8;
@@ -121,14 +149,26 @@
                 ex.innerText = words[index][2] + " — " + words[index][3];
                 score++;
                 index++;
-                setTimeout(loadQuestion, 1500);
+                
+                f.innerText += " (Premi spazio per continuare)";
+                document.addEventListener("keydown", nextOnSpace);
+    
             } else {
                 f.innerText = "✗ Sbagliato. Riprova.";
                 f.style.color = "red";
             }
         }
 
+        
         loadQuestion();
+
+        function nextOnSpace(event) {
+            if (event.code === "Space") {
+                document.removeEventListener("keydown", nextOnSpace);
+                loadQuestion();
+            }
+        }
+    
     </script>
 </body>
 </html>

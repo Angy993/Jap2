@@ -65,7 +65,7 @@
             gap: 30px;
         }
         .sidebar {
-            width: 250px;
+            width: 300px;
             padding: 20px;
             background: #ffffff;
             border-radius: 8px;
@@ -95,7 +95,7 @@
 </head>
 
 <body>
-    <div class="version">Versione 2.3</div>
+    <div class="version">Versione 2.4</div>
     <div class="layout">
         <div class="container">
     
@@ -149,7 +149,7 @@ function checkAnswer() {
         document.getElementById("spiegazioni").innerHTML = spiegaHtml;
 
         index++;
-        setTimeout(loadQuestion, 4000);
+        
     } else {
         document.getElementById("result").innerHTML = "<span style='color:red;'>✗ Risposta sbagliata. Riprova.</span>";
     }
@@ -173,12 +173,45 @@ document.addEventListener("keydown", function(event) {
 
         </div>
         <div class="sidebar">
-            <h3>Parole Imparate</h3>
-            <ul>
-                <li><span class="blur">taberu</span> – Mangiare</li>
-                <li><span class="blur">miru</span> – Guardare</li>
-            </ul>
-        </div>
+<h3>Parole Imparate</h3>
+<ul>
+  <li><span class="blur">taberu</span> – Mangiare</li>
+  <li><span class="blur">miru</span> – Guardare</li>
+  <li><span class="blur">kiku</span> – Ascoltare</li>
+  <li><span class="blur">nomu</span> – Bere</li>
+  <li><span class="blur">ikiru</span> – Vivere</li>
+  <li><span class="blur">neru</span> – Dormire</li>
+  <li><span class="blur">hashiru</span> – Correre</li>
+  <li><span class="blur">yomu</span> – Leggere</li>
+  <li><span class="blur">kaeru</span> – Tornare</li>
+  <li><span class="blur">kuru</span> – Venire</li>
+  <li><span class="blur">iku</span> – Andare</li>
+  <li><span class="blur">benkyou</span> – Studiare</li>
+  <li><span class="blur">ryouri</span> – Cucinare</li>
+  <li><span class="blur">asobu</span> – Giocare</li>
+  <li><span class="blur">hanasu</span> – Parlare</li>
+  <li><span class="blur">suru</span> – Fare</li>
+  <li><span class="blur">tsukuru</span> – Creare</li>
+  <li><span class="blur">mimasu</span> – Guardare (formale)</li>
+  <li><span class="blur">kikimasu</span> – Ascoltare (formale)</li>
+  <li><span class="blur">kaimasu</span> – Comprare</li>
+  <li><span class="blur">aimasu</span> – Incontrare</li>
+  <li><span class="blur">arimasu</span> – Esistere (oggetti)</li>
+  <li><span class="blur">imasu</span> – Esistere (persone)</li>
+  <li><span class="blur">desu</span> – Essere (formale)</li>
+  <li><span class="blur">suki</span> – Piace</li>
+  <li><span class="blur">kirai</span> – Non piace</li>
+  <li><span class="blur">jouzu</span> – Bravo in</li>
+  <li><span class="blur">heta</span> – Scarso in</li>
+  <li><span class="blur">wakaru</span> – Capire</li>
+  <li><span class="blur">shiru</span> – Conoscere</li>
+  <li><span class="blur">oboeru</span> – Memorizzare</li>
+  <li><span class="blur">wasuremasu</span> – Dimenticare</li>
+  <li><span class="blur">dekiru</span> – Essere capace</li>
+  <li><span class="blur">yaru</span> – Fare (casual)</li>
+  <li><span class="blur">arau</span> – Lavare</li>
+</ul>
+</div>
     </div>
 </body>
     

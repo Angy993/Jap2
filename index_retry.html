@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Romaji Interattivo</title>
+  <style>
+    body { margin: 0; background: #f4f6f9; font-family: 'Helvetica Neue', sans-serif; }
+    .layout { display: flex; max-width: 1300px; margin: 0 auto; padding: 40px; gap: 30px; }
+    .container { flex: 1; background: #fff; border-radius: 12px; box-shadow: 0 0 12px rgba(0,0,0,0.05); padding: 30px; }
+    .quiz-title { font-size: 28px; margin-bottom: 20px; text-align: center; color: #2a5d84; }
+    .question { font-size: 22px; text-align: center; margin-bottom: 15px; }
+    .input-group { text-align: center; }
+    input { font-size: 20px; padding: 10px; width: 320px; border: 1px solid #ccc; border-radius: 6px; }
+    button { font-size: 16px; padding: 10px 20px; margin-left: 10px; background: #2a5d84; color: white; border: none; border-radius: 6px; }
+    .result { font-size: 18px; margin-top: 30px; line-height: 1.6; }
+    .explanation { background: #eef3f8; padding: 14px; margin-top: 15px; border-left: 4px solid #2a5d84; border-radius: 4px; }
+    .sidebar { width: 280px; background: #fff; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.04); padding: 25px; height: fit-content; }
+    .sidebar h3 { margin-top: 0; font-size: 20px; color: #2a5d84; }
+    .sidebar ul { list-style: none; padding-left: 0; }
+    .sidebar li { margin-bottom: 10px; }
+    .blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
+    .blur:hover { filter: blur(0); }
+    .version { position: fixed; top: 10px; right: 20px; font-size: 13px; color: #888; font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="version">Versione 4.0</div>
+  <div id="score" style="position:fixed; top:10px; left:20px; font-size:14px; color:#2a5d84;"><strong>Punteggio: 0</strong></div>
+  <div class="layout">
+    <div class="container">
+      <div class="quiz-title">Quiz di Romaji Giapponese</div>
+<div style="text-align:center; margin-top:10px;">
+  <button id="retryBtn" onclick="retryWrongAnswers()" style="display:none; padding:8px 16px; font-size:14px; background:#f39c12; color:white; border:none; border-radius:6px;">Ripassa parole sbagliate</button>
+</div>
+      <div id="question" class="question"></div>
+      <div class="input-group">
+        <input type="text" id="userInput" placeholder="Scrivi in romaji">
+        <button onclick="checkAnswer()">Verifica</button>
+      </div>
+      <div class="result" id="result"></div>
+      <div id="spiegazioni"></div>
+    </div>
+    <div class="sidebar">
+      <h3>Parole Imparate</h3>
+      <ul id="paroleSidebar"></ul>
+    </div>
+  </div>
+  <script src="new_romaji_quiz_data.js"></script>
+  <script>
+    let index = 0;
+
+  let score = 0;
+
+  function updateScore() {
+    document.getElementById("score").innerText = `Punteggio: ${score}`;
+  }
+
+
+  let wrongAnswers = [];
+  let retrying = false;
+
+  function retryWrongAnswers() {
+    if (wrongAnswers.length === 0) {
+      alert("Nessuna parola sbagliata da ripassare!");
+      return;
+    }
+    data = wrongAnswers;
+    index = 0;
+    retrying = true;
+    document.querySelector(".input-group").style.display = "block";
+    document.getElementById("retryBtn").style.display = "none";
+    loadQuestion();
+  }
+
+
+  let score = 0;
+
+  function updateScore() {
+    document.getElementById("score").innerText = `Punteggio: ${score}`;
+  }
+
+
+    function loadQuestion() {
+      document.getElementById("userInput").value = "";
+      document.getElementById("result").innerHTML = "";
+      document.getElementById("spiegazioni").innerHTML = "";
+      if (index < data.length) {
+        document.getElementById("question").innerHTML = "<strong>Traduci:</strong> " + data[index].italiano;
+      } else {
+        document.getElementById("question").innerHTML = "Hai completato il quiz!";
+document.getElementById("retryBtn").style.display = "inline-block";
+        document.querySelector(".input-group").style.display = "none";
+      }
+    }
+
+    function checkAnswer() {
+      const input = document.getElementById("userInput").value.trim().toLowerCase();
+      const correct = data[index].romaji.toLowerCase();
+      if (input === correct) {
+        let result = "<strong>Frase:</strong><br>" + data[index].frase + "<br><em>" + data[index].traduzione + "</em><br>";
+        document.getElementById("result").innerHTML = result;
+        const spiegazioni = data[index].spiegazioni || {};
+        let spiegaHtml = "";
+        for (let part in spiegazioni) {
+          const s = spiegazioni[part];
+          spiegaHtml += "<div class='explanation'><strong>" + part + "</strong><br>" +
+                        "<em><strong>Descrizione:</strong></em> " + s.descrizione + "<br>" +
+                        "<em><strong>Uso:</strong></em> " + s.uso + "<br>" +
+                        "<em><strong>Esempio:</strong></em> " + s.esempio + "<br>" +
+                        "<em><strong>Nota:</strong></em> " + s.nota + "</div>";
+        }
+        score++;
+        updateScore();
+        document.getElementById("spiegazioni").innerHTML = spiegaHtml;
+      } else {
+        
+        document.getElementById("result").innerHTML = "<span style='color:red;'>✗ Risposta sbagliata. Riprova.</span>";
+        if (!retrying && !wrongAnswers.includes(data[index])) wrongAnswers.push(data[index]);
+    
+      }
+    }
+
+    function popolaSidebar() {
+      const sidebar = document.getElementById("paroleSidebar");
+      data.forEach(entry => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="blur">${entry.romaji}</span> – ${entry.italiano}`;
+        sidebar.appendChild(li);
+      });
+    }
+
+    document.getElementById("userInput").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") checkAnswer();
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key.toLowerCase() === "q") {
+        index++;
+        loadQuestion();
+      }
+    });
+
+    window.onload = () => {
+      loadQuestion();
+      popolaSidebar();
+      updateScore();
+    };
+  </script>
+</body>
+</html>

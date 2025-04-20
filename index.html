@@ -3,84 +3,122 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>Quiz Romaji - Versione Statica</title>
+    <title>Quiz Romaji Interattivo</title>
     <style>
-        body {{
-            font-family: Arial, sans-serif;
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 30px;
+        }
+        .container {
             max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
-            background: #f9f9f9;
-        }}
-        .entry {{
+            margin: auto;
             background: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-left: 5px solid #2a5d84;
-        }}
-        .example {{
-            margin-top: 10px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2a5d84;
+        }
+        .input-group {
+            margin-top: 20px;
+            text-align: center;
+        }
+        input {
             font-size: 18px;
-        }}
-        .explanation {{
+            padding: 8px;
+            width: 300px;
+        }
+        button {
+            font-size: 16px;
+            padding: 8px 20px;
+            margin-left: 10px;
+            background: #2a5d84;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .result {
+            margin-top: 30px;
+            font-size: 18px;
+        }
+        .explanation {
             background: #eef3f8;
             padding: 12px;
-            margin-top: 10px;
+            margin-top: 15px;
             border-left: 4px solid #2a5d84;
-        }}
-        .version {{
+        }
+        .version {
             position: fixed;
             top: 10px;
             right: 15px;
             font-size: 13px;
             color: #666;
             font-style: italic;
-        }}
+        }
     </style>
 </head>
 <body>
-    <div class="version">Versione 1.6</div>
-    <h1>Quiz Romaji - Spiegazioni Statiche</h1>
+    <div class="version">Versione 2.0</div>
+    <div class="container">
+        <h1>Quiz Romaji</h1>
+        <div id="question"></div>
+        <div class="input-group">
+            <input type="text" id="userInput" placeholder="Scrivi in romaji">
+            <button onclick="checkAnswer()">Verifica</button>
+        </div>
+        <div class="result" id="result"></div>
+        <div id="spiegazioni"></div>
+    </div>
 
-    <div class="entry">
-        <strong>Parola italiana:</strong> Mangiare<br>
-        <strong>Romaji:</strong> taberu
-        <div class="example">
-            <strong>Frase:</strong><br>
-            Watashi wa gohan o taberu.<br>
-            Mangio riso.
-        </div>
-    
-        <div class="explanation">
-            <strong>wa</strong><br>
-            <em><strong>Descrizione:</strong></em> Particella del tema, introduce l’argomento della frase.<br>
-            <em><strong>Uso:</strong></em> Si usa per indicare di cosa si parla.<br>
-            <em><strong>Esempio:</strong></em> Watashi wa gakusei desu. → Io (riguardo a me) sono uno studente.<br>
-            <em><strong>Nota:</strong></em> Spesso si trova dopo il soggetto logico.
-        </div>
-        
-        <div class="explanation">
-            <strong>o</strong><br>
-            <em><strong>Descrizione:</strong></em> Particella dell’oggetto diretto.<br>
-            <em><strong>Uso:</strong></em> Collega l’oggetto al verbo.<br>
-            <em><strong>Esempio:</strong></em> Ringo o taberu. → Mangio una mela.<br>
-            <em><strong>Nota:</strong></em> Si scrive を ma si legge 'o'.
-        </div>
-        </div>
-    <div class="entry">
-        <strong>Parola italiana:</strong> Guardare<br>
-        <strong>Romaji:</strong> miru
-        <div class="example">
-            <strong>Frase:</strong><br>
-            Anime o miru.<br>
-            Guardo anime.
-        </div>
-    
-        <div class="explanation">
-            <strong>o</strong><br>
-            <em><strong>Descrizione:</strong></em> Particella dell’oggetto diretto.<br>
-            <em><strong>Uso:</strong></em> Indica ciò che riceve l’azione.<br>
-            <em><strong>Esempio:</strong></em> Hon o yomu. → Leggo un libro.<br>
-            <em><strong>Nota:</strong></em> Sempre tra l’oggetto e il verbo.
-        </div>
-        </div></body></html>
+<script>
+const data = [{"italiano": "Mangiare", "romaji": "taberu", "frase": "Watashi wa gohan o taberu.", "traduzione": "Mangio riso.", "spiegazioni": {"wa": {"descrizione": "Particella del tema, introduce l\u2019argomento della frase.", "uso": "Si usa per indicare di cosa si parla.", "esempio": "Watashi wa gakusei desu. \u2192 Io sono uno studente.", "nota": "Spesso si trova dopo il soggetto logico."}, "o": {"descrizione": "Particella dell\u2019oggetto diretto.", "uso": "Collega l\u2019oggetto al verbo.", "esempio": "Ringo o taberu. \u2192 Mangio una mela.", "nota": "Si scrive \u3092 ma si legge 'o'."}}}, {"italiano": "Guardare", "romaji": "miru", "frase": "Anime o miru.", "traduzione": "Guardo anime.", "spiegazioni": {"o": {"descrizione": "Particella dell\u2019oggetto diretto.", "uso": "Indica ci\u00f2 che riceve l\u2019azione.", "esempio": "Hon o yomu. \u2192 Leggo un libro.", "nota": "Sempre tra l\u2019oggetto e il verbo."}}}];
+
+let index = 0;
+
+function loadQuestion() {
+    document.getElementById("userInput").value = "";
+    document.getElementById("result").innerHTML = "";
+    document.getElementById("spiegazioni").innerHTML = "";
+    if (index < data.length) {
+        document.getElementById("question").innerHTML = "<strong>Traduci:</strong> " + data[index].italiano;
+    } else {
+        document.getElementById("question").innerHTML = "Hai completato il quiz!";
+        document.querySelector(".input-group").style.display = "none";
+    }
+}
+
+function checkAnswer() {
+    const input = document.getElementById("userInput").value.trim().toLowerCase();
+    const correct = data[index].romaji.toLowerCase();
+
+    if (input === correct) {
+        let result = "<strong>Frase:</strong><br>" + data[index].frase + "<br><em>" + data[index].traduzione + "</em><br>";
+        document.getElementById("result").innerHTML = result;
+
+        const spiegazioni = data[index].spiegazioni;
+        let spiegaHtml = "";
+        for (let part in spiegazioni) {
+            const s = spiegazioni[part];
+            spiegaHtml += "<div class='explanation'><strong>" + part + "</strong><br>" +
+                          "<em><strong>Descrizione:</strong></em> " + s.descrizione + "<br>" +
+                          "<em><strong>Uso:</strong></em> " + s.uso + "<br>" +
+                          "<em><strong>Esempio:</strong></em> " + s.esempio + "<br>" +
+                          "<em><strong>Nota:</strong></em> " + s.nota + "</div>";
+        }
+        document.getElementById("spiegazioni").innerHTML = spiegaHtml;
+
+        index++;
+        setTimeout(loadQuestion, 4000);
+    } else {
+        document.getElementById("result").innerHTML = "<span style='color:red;'>✗ Risposta sbagliata. Riprova.</span>";
+    }
+}
+
+window.onload = loadQuestion;
+</script>
+</body>
+</html>

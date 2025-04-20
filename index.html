@@ -72,10 +72,70 @@
             font-style: italic;
         }
     </style>
+
+<script>
+    const explanations = {
+    "ga": {
+        "descrizione": "\u2018ga\u2019 \u00e8 una particella che identifica il soggetto specifico o nuovo in una frase.",
+        "uso": "Si usa quando vuoi introdurre o enfatizzare il soggetto dell\u2019azione.",
+        "esempio": "Watashi ga iku. \u2192 Io (sono quello che) vado.",
+        "nota": "Usata per evidenziare il soggetto o quando \u00e8 importante chi compie l\u2019azione."
+    },
+    "o": {
+        "descrizione": "\u2018o\u2019 (\u3092) \u00e8 la particella che marca l\u2019oggetto diretto, cio\u00e8 ci\u00f2 che riceve l\u2019azione.",
+        "uso": "Va dopo l\u2019oggetto e prima del verbo. Si usa solo con verbi transitivi.",
+        "esempio": "Ringo o taberu. \u2192 Mangio una mela.",
+        "nota": "Si scrive \u3092 ma si legge 'o'. \u00c8 sempre usata per un oggetto diretto, mai per soggetti o luoghi."
+    },
+    "ni": {
+        "descrizione": "\u2018ni\u2019 (\u306b) indica direzione, tempo, o destinatario.",
+        "uso": "Si usa per dire dove si va, quando succede qualcosa, o a chi \u00e8 destinato qualcosa.",
+        "esempio": "Gakkou ni iku. \u2192 Vado a scuola.",
+        "nota": "Pu\u00f2 essere tradotta con \u2018a\u2019, \u2018in\u2019, \u2018per\u2019 a seconda del contesto."
+    },
+    "de": {
+        "descrizione": "\u2018de\u2019 (\u3067) indica il luogo dove avviene un\u2019azione.",
+        "uso": "Si mette dopo il luogo e prima del verbo.",
+        "esempio": "Kouen de asobu. \u2192 Gioco al parco.",
+        "nota": "Usata solo con verbi d\u2019azione, non con verbi di stato."
+    },
+    "wa": {
+        "descrizione": "\u2018wa\u2019 (\u306f) marca il tema della frase.",
+        "uso": "Indica di cosa si parla. Pu\u00f2 essere anche diverso dal soggetto.",
+        "esempio": "Watashi wa gakusei desu. \u2192 Io (riguardo a me) sono studente.",
+        "nota": "Spesso usato all\u2019inizio delle frasi per presentare un argomento. Non confonderlo con \u2018ga\u2019."
+    },
+    "to": {
+        "descrizione": "\u2018to\u2019 (\u3068) significa \u2018e\u2019 o \u2018con\u2019.",
+        "uso": "Unisce parole o indica compagnia.",
+        "esempio": "Tomodachi to hanasu. \u2192 Parlo con un amico.",
+        "nota": "Utile per citazioni e per collegare due o pi\u00f9 nomi."
+    },
+    "desu": {
+        "descrizione": "\u2018desu\u2019 \u00e8 la copula cortese (forma di \u2018essere\u2019).",
+        "uso": "Si usa per terminare una frase in modo educato.",
+        "esempio": "Kore wa hon desu. \u2192 Questo \u00e8 un libro.",
+        "nota": "Non ha tempo verbale proprio, ma si pu\u00f2 combinare con \u2018deshita\u2019 per il passato."
+    },
+    "suru": {
+        "descrizione": "\u2018suru\u2019 \u00e8 il verbo irregolare \u2018fare\u2019.",
+        "uso": "Spesso combinato con nomi per creare verbi.",
+        "esempio": "Benkyou suru. \u2192 Studiare.",
+        "nota": "Molto comune, usato anche in frasi complesse (undou suru = fare esercizio fisico)."
+    },
+    "masu": {
+        "descrizione": "\u2018masu\u2019 \u00e8 la forma cortese che si aggiunge ai verbi.",
+        "uso": "Si attacca alla radice dei verbi per renderli educati.",
+        "esempio": "Tabemasu. \u2192 Mangio (modo cortese).",
+        "nota": "Pu\u00f2 essere coniugato: mashita (passato), masen (negativo), ecc."
+    }
+};
+</script>
+
 </head>
     
 <body>
-<div class="version">Versione 1.2</div>
+<div class="version">Versione 1.3</div>
     <div class="quiz-container">
         <h2>Traduci in romaji</h2>
         <div id="question"></div>
@@ -167,7 +227,26 @@
                     }
                 });
 
-                ex.appendChild(explanationDiv);
+                
+        explanationDiv.innerHTML = "";
+        Object.keys(explanations).forEach(key => {
+            if (words[index][2].includes(" " + key + " ") || words[index][2].endsWith(key)) {
+                const box = document.createElement("div");
+                box.style.marginTop = "15px";
+                box.style.padding = "10px";
+                box.style.background = "#f9f9f9";
+                box.style.borderLeft = "4px solid #2a5d84";
+                box.style.marginBottom = "15px";
+                box.innerHTML =
+                    "<strong>" + key + "</strong><br>" +
+                    "<em><strong>Descrizione:</strong></em> " + explanations[key].descrizione + "<br><br>" +
+                    "<em><strong>Uso:</strong></em> " + explanations[key].uso + "<br><br>" +
+                    "<em><strong>Esempio:</strong></em> " + explanations[key].esempio + "<br><br>" +
+                    "<em><strong>Nota:</strong></em> " + explanations[key].nota;
+                explanationDiv.appendChild(box);
+            }
+        });
+    
     
                 score++;
                 index++;

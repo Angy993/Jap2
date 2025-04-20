@@ -2,56 +2,132 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz Romaji Multilang Full con Animazioni e Emoji</title>
+  <title>Quiz Romaji Interattivo</title>
   <style>
-    body { margin: 0; background: #f4f6f9; font-family: 'Helvetica Neue', sans-serif; }
-    .layout { display: flex; max-width: 1300px; margin: 0 auto; padding: 40px; gap: 30px; }
-    .container { flex: 1; background: #fff; border-radius: 12px; box-shadow: 0 0 12px rgba(0,0,0,0.05); padding: 30px; }
-    .quiz-title { font-size: 28px; margin-bottom: 20px; text-align: center; color: #2a5d84; }
-    .lang-select { text-align: center; margin-bottom: 15px; }
-    .question { font-size: 22px; text-align: center; margin-bottom: 15px; }
-    .input-group { text-align: center; }
-    input { font-size: 20px; padding: 10px; width: 320px; border: 1px solid #ccc; border-radius: 6px; }
+    body {
+      margin: 0;
+      background: #f4f6f9;
+      font-family: 'Helvetica Neue', sans-serif;
+    }
+    .layout {
+      display: flex;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 40px;
+      gap: 30px;
+    }
+    .container {
+      flex: 1;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.05);
+      padding: 30px;
+    }
+    .quiz-title {
+      font-size: 28px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #2a5d84;
+      animation: fadeIn 1s ease-in-out;
+    }
+    .question {
+      font-size: 22px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .input-group {
+      text-align: center;
+    }
+    input {
+      font-size: 20px;
+      padding: 10px;
+      width: 320px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
     button {
-      font-size: 16px; padding: 10px 20px; margin-left: 10px;
-      background: #2a5d84; color: white; border: none; border-radius: 6px;
-      transition: transform 0.2s ease-out;
+      font-size: 16px;
+      padding: 10px 20px;
+      margin-left: 10px;
+      background: #2a5d84;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
     }
-    button:hover { transform: scale(1.05); }
-    .result { font-size: 18px; margin-top: 30px; line-height: 1.6; }
+    .result {
+      font-size: 18px;
+      margin-top: 30px;
+      line-height: 1.6;
+    }
     .explanation {
-      background: #eef3f8; padding: 14px; margin-top: 15px;
-      border-left: 4px solid #2a5d84; border-radius: 4px;
-      animation: fadeIn 0.3s ease-out;
+      background: #eef3f8;
+      padding: 14px;
+      margin-top: 15px;
+      border-left: 4px solid #2a5d84;
+      border-radius: 4px;
     }
-    .sidebar { width: 280px; background: #fff; border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.04); padding: 25px; height: fit-content;
+    .sidebar {
+      width: 280px;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.04);
+      padding: 25px;
+      height: fit-content;
     }
-    .sidebar h3 { margin-top: 0; font-size: 20px; color: #2a5d84; }
-    .sidebar ul { list-style: none; padding-left: 0; }
-    .sidebar li { margin-bottom: 10px; }
-    .blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; display: inline-block; }
-    .blur:hover { filter: blur(0); }
-    .highlight { animation: highlight 0.5s ease-out; }
-    .version { position: fixed; top: 10px; right: 20px; font-size: 13px; color: #888; font-style: italic; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes highlight {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
-      100% { transform: scale(1); }
+    .sidebar h3 {
+      margin-top: 0;
+      font-size: 20px;
+      color: #2a5d84;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    .sidebar li {
+      margin-bottom: 10px;
+    }
+    .blur {
+      filter: blur(5px);
+      transition: filter 0.3s;
+      cursor: pointer;
+    }
+    .blur:hover {
+      filter: blur(0);
+    }
+    .version {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 13px;
+      color: #888;
+      font-style: italic;
+    }
+    .language-toggle {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .language-toggle select {
+      font-size: 16px;
+      padding: 6px 10px;
+      border-radius: 5px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <div class="version">Versione Multilang Full 3.1</div>
+  <div class="version">Versione 4.0</div>
   <div class="layout">
     <div class="container">
       <div class="quiz-title">Quiz di Romaji Giapponese</div>
-      <div class="lang-select">
-        <label for="langSelect">Da:</label>
-        <select id="langSelect">
-          <option value="italiano">Italiano</option>
-          <option value="english">English</option>
+      <div class="language-toggle">
+        <label for="lang">Lingua:</label>
+        <select id="lang">
+          <option value="it">Italiano</option>
+          <option value="en">English</option>
         </select>
       </div>
       <div id="question" class="question"></div>
@@ -64,138 +140,111 @@
     </div>
     <div class="sidebar">
       <h3>Parole Imparate</h3>
-      <ul id="paroleSidebar"></ul>
+      <ul id="sidebarList"></ul>
     </div>
   </div>
 
   <script>
+    const langSelector = document.getElementById("lang");
+
     const data = [
-      // … (le prime 19 voci restano invariate) …
       {
-        emoji: "🤝",
-        italiano: "Incontrare",
-        english: "To meet",
-        romaji: "aimasu",
-        frase: "Tomodachi ni aimasu.",
-        traduzioneIt: "Incontro un amico.",
-        traduzioneEn: "I meet a friend.",
-        spiegazioniIt: {
-          ni: {
-            descrizione: "Particella di direzione/oggetto indiretto.",
-            uso: "Indica direzione o ricevente indiretto.",
-            esempio: "Tomodachi ni aimasu. → Incontro un amico.",
-            nota: "Si scrive に ma si legge 'ni'."
-          }
-        },
-        spiegazioniEn: {
-          ni: {
-            descrizione: "Direction particle.",
-            uso: "Indicates direction or indirect object.",
-            esempio: "Tomodachi ni aimasu. → I meet a friend.",
-            nota: "に read 'ni'."
-          }
-        }
-      },
-      {
-        emoji: "📦",
-        italiano: "Esistere (oggetti)",
-        english: "To exist (objects)",
-        romaji: "arimasu",
-        frase: "Tsukue ga arimasu.",
-        traduzioneIt: "C'è una scrivania.",
-        traduzioneEn: "There is a desk.",
-        spiegazioniIt: {
-          ga: {
-            descrizione: "Particella soggetto.",
-            uso: "Indica il soggetto della frase.",
-            esempio: "Tsukue ga arimasu. → C'è una scrivania.",
-            nota: "Si scrive が e si legge 'ga'."
-          }
-        },
-        spiegazioniEn: {
-          ga: {
-            descrizione: "Subject particle.",
-            uso: "Marks the subject of the sentence.",
-            esempio: "Tsukue ga arimasu. → There is a desk.",
-            nota: "が read 'ga'."
-          }
-        }
-      },
-      {
-        emoji: "👤",
-        italiano: "Esistere (persone)",
-        english: "To exist (people)",
-        romaji: "imasu",
-        frase: "Sensei ga imasu.",
-        traduzioneIt: "C'è l'insegnante.",
-        traduzioneEn: "There is a teacher.",
-        spiegazioniIt: {
-          ga: {
-            descrizione: "Particella soggetto.",
-            uso: "Indica il soggetto della frase.",
-            esempio: "Sensei ga imasu. → C'è l'insegnante.",
-            nota: "Si scrive が e si legge 'ga'."
-          }
-        },
-        spiegazioniEn: {
-          ga: {
-            descrizione: "Subject particle.",
-            uso: "Marks the subject of the sentence.",
-            esempio: "Sensei ga imasu. → There is a teacher.",
-            nota: "が read 'ga'."
-          }
-        }
-      },
-      {
-        emoji: "👉",
-        italiano: "Fare (casual)",
-        english: "To do (casual)",
-        romaji: "yaru",
-        frase: "Sugu yaru.",
-        traduzioneIt: "Lo faccio subito.",
-        traduzioneEn: "I'll do it right away.",
-        spiegazioniIt: {
+        romaji: "taberu",
+        italiano: "Mangiare",
+        inglese: "To eat",
+        emoji: "🍚",
+        frase: "Watashi wa gohan o taberu.",
+        traduzione_it: "Mangio riso.",
+        traduzione_en: "I eat rice.",
+        spiegazioni: {
+          wa: {
+            descrizione: "Particella del tema.",
+            uso: "Indica l'argomento principale.",
+            esempio: "Watashi wa gakusei desu.",
+            nota: "Si scrive は ma si legge 'wa'."
+          },
           o: {
-            descrizione: "Particella dell'oggetto diretto.",
-            uso: "Indica ciò che riceve l'azione.",
-            esempio: "Sugu yaru → Lo faccio subito.",
-            nota: "を read 'o'."
+            descrizione: "Particella oggetto diretto.",
+            uso: "Collega oggetto e verbo.",
+            esempio: "Ringo o taberu.",
+            nota: "Si scrive を ma si legge 'o'."
           }
-        },
-        spiegazioniEn: {
+        }
+      },
+      {
+        romaji: "nomu",
+        italiano: "Bere",
+        inglese: "To drink",
+        emoji: "🧃",
+        frase: "Watashi wa mizu o nomu.",
+        traduzione_it: "Bevo acqua.",
+        traduzione_en: "I drink water.",
+        spiegazioni: {
+          wa: {
+            descrizione: "Particella del tema.",
+            uso: "Indica il soggetto della frase.",
+            esempio: "Watashi wa gakusei desu.",
+            nota: "Si scrive は ma si legge 'wa'."
+          },
           o: {
-            descrizione: "Direct object particle.",
-            uso: "Marks the direct object.",
-            esempio: "Sugu yaru → I'll do it right away.",
-            nota: "を read 'o'."
+            descrizione: "Particella oggetto diretto.",
+            uso: "Collega oggetto e verbo.",
+            esempio: "Mizu o nomu.",
+            nota: "Si scrive を ma si legge 'o'."
+          }
+        }
+      },
+      {
+        romaji: "miru",
+        italiano: "Guardare",
+        inglese: "To watch",
+        emoji: "👀",
+        frase: "Anime o miru.",
+        traduzione_it: "Guardo anime.",
+        traduzione_en: "I watch anime.",
+        spiegazioni: {
+          o: {
+            descrizione: "Particella oggetto diretto.",
+            uso: "Collega oggetto e verbo.",
+            esempio: "Anime o miru.",
+            nota: "Si scrive を ma si legge 'o'."
+          }
+        }
+      },
+      {
+        romaji: "tanoshii",
+        italiano: "Divertente",
+        inglese: "Fun",
+        emoji: "🎉",
+        frase: "Kono asobi wa tanoshii.",
+        traduzione_it: "Questo gioco è divertente.",
+        traduzione_en: "This game is fun.",
+        spiegazioni: {
+          wa: {
+            descrizione: "Particella del tema.",
+            uso: "Identifica l'argomento.",
+            esempio: "Kono hon wa omoshiroi.",
+            nota: "Si scrive は ma si legge 'wa'."
           }
         }
       }
+      // Puoi continuare ad aggiungere tutte le parole nella stessa struttura
     ];
 
     let index = 0;
-    const sidebar = document.getElementById("paroleSidebar");
-    const langSelect = document.getElementById("langSelect");
 
-    function popolaSidebar() {
-      sidebar.innerHTML = "";
-      data.forEach(w => {
-        const li = document.createElement("li");
-        li.innerHTML = `${w.emoji} <span class="blur">${w.romaji}</span> – ${w.italiano}`;
-        sidebar.appendChild(li);
-      });
+    function getCurrentLang() {
+      return langSelector.value;
     }
 
     function loadQuestion() {
-      const lang = langSelect.value;
       document.getElementById("userInput").value = "";
       document.getElementById("result").innerHTML = "";
       document.getElementById("spiegazioni").innerHTML = "";
       if (index < data.length) {
-        const w = data[index];
-        const word = lang === "italiano" ? w.italiano : w.english;
-        document.getElementById("question").innerHTML =
-          `${w.emoji} <strong>Translate (${lang} → romaji):</strong> ${word}`;
+        const lang = getCurrentLang();
+        const parola = lang === "en" ? data[index].inglese : data[index].italiano;
+        document.getElementById("question").innerHTML = `<strong>${data[index].emoji} Traduci:</strong> ${parola}`;
       } else {
         document.getElementById("question").innerHTML = "Hai completato il quiz!";
         document.querySelector(".input-group").style.display = "none";
@@ -203,51 +252,59 @@
     }
 
     function checkAnswer() {
-      const lang = langSelect.value;
       const input = document.getElementById("userInput").value.trim().toLowerCase();
-      const w = data[index];
-      const q = document.getElementById("question");
-      if (input === w.romaji) {
-        q.classList.add("highlight");
-        setTimeout(() => q.classList.remove("highlight"), 500);
+      const correct = data[index].romaji.toLowerCase();
 
-        document.getElementById("result").innerHTML =
-          `<strong>${w.emoji} Frase:</strong><br>${w.frase}<br>` +
-          `<em>${lang==="italiano"? w.traduzioneIt : w.traduzioneEn}</em>`;
+      if (input === correct) {
+        const lang = getCurrentLang();
+        const frase = data[index].frase;
+        const trad = lang === "en" ? data[index].traduzione_en : data[index].traduzione_it;
+        let result = `<strong>Frase:</strong><br>${frase}<br><em>${trad}</em><br>`;
+        document.getElementById("result").innerHTML = result;
 
-        const key = lang === "italiano" ? "spiegazioniIt" : "spiegazioniEn";
-        const spieg = w[key] || {};
-        let html = "";
-        for (let p in spieg) {
-          const s = spieg[p];
-          html += `<div class="explanation"><strong>${p}</strong><br>` +
-                  `<em><strong>${lang==="italiano"?"Descrizione":"Description"}:</strong></em> ${s.descrizione}<br>` +
-                  `<em><strong>${lang==="italiano"?"Uso":"Usage"}:</strong></em> ${s.uso}<br>` +
-                  `<em><strong>${lang==="italiano"?"Esempio":"Example"}:</strong></em> ${s.esempio}<br>` +
-                  `<em><strong>${lang==="italiano"?"Nota":"Note"}:</strong></em> ${s.nota}</div>`;
+        const spiegazioni = data[index].spiegazioni || {};
+        let spiegaHtml = "";
+        for (let part in spiegazioni) {
+          const s = spiegazioni[part];
+          spiegaHtml += `<div class='explanation'><strong>${part}</strong><br>
+            <em><strong>Descrizione:</strong></em> ${s.descrizione}<br>
+            <em><strong>Uso:</strong></em> ${s.uso}<br>
+            <em><strong>Esempio:</strong></em> ${s.esempio}<br>
+            <em><strong>Nota:</strong></em> ${s.nota}</div>`;
         }
-        document.getElementById("spiegazioni").innerHTML = html;
+        document.getElementById("spiegazioni").innerHTML = spiegaHtml;
       } else {
-        document.getElementById("result").innerHTML =
-          `<span style="color:red;">✗ ${lang==="italiano"?"Risposta sbagliata. Riprova.":"Wrong answer. Try again."}</span>`;
+        document.getElementById("result").innerHTML = "<span style='color:red;'>✗ Risposta sbagliata. Riprova.</span>";
       }
     }
 
-    langSelect.addEventListener("change", () => { index = 0; loadQuestion(); });
-    document.getElementById("userInput").addEventListener("keydown", e => {
-      if (e.key === "Enter") checkAnswer();
+    function popolaSidebar() {
+      const sidebar = document.getElementById("sidebarList");
+      sidebar.innerHTML = "";
+      data.forEach(entry => {
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="blur">${entry.romaji}</span> – ${entry.italiano}`;
+        sidebar.appendChild(li);
+      });
+    }
+
+    document.getElementById("userInput").addEventListener("keydown", function(event) {
+      if (event.key === "Enter") checkAnswer();
     });
-    document.addEventListener("keydown", e => {
-      if ((e.key.toLowerCase()==="q" || e.key==="ArrowRight") && index < data.length-1) {
-        index++; loadQuestion();
-      }
-      if (e.key==="ArrowLeft" && index>0) {
-        index--; loadQuestion();
+
+    document.addEventListener("keydown", function(event) {
+      if (event.key === "q" || event.key === "ArrowRight") {
+        index++;
+        loadQuestion();
       }
     });
 
-    popolaSidebar();
-    window.onload = loadQuestion;
+    langSelector.addEventListener("change", loadQuestion);
+
+    window.onload = () => {
+      loadQuestion();
+      popolaSidebar();
+    };
   </script>
 </body>
 </html>

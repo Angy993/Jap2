@@ -4,35 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Quiz Romaji Avanzato</title>
-    
     <style>
-        h2 {
-            color: #2a5d84;
-            font-size: 28px;
-            margin-bottom: 15px;
-        }
-        .quiz-container button {
-            background-color: #2a5d84;
-            color: white;
-            border: none;
-            border-radius: 5px;
-        }
-        .quiz-container button:hover {
-            background-color: #1e3f5a;
-        }
-        .quiz-container input {
-            border: 2px solid #ccc;
-            border-radius: 4px;
-        }
-        .sidebar {
-            font-size: 16px;
-        }
-        .sidebar h3 {
-            color: #2a5d84;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 5px;
-        }
-    
         body {
             font-family: 'Segoe UI', sans-serif;
             background: #f0f4f8;
@@ -102,7 +74,10 @@
     </div>
     <div class="sidebar">
         <h3>Parole Imparate</h3>
-        <ul id="wordList"></ul>
+        
+        <ul id="wordList">
+        </ul>
+    
     </div>
     <script>
         const words = [
@@ -121,7 +96,10 @@
         words.forEach(item => {
             const li = document.createElement("li");
             li.innerHTML = '<span class="blur">' + item[1] + '</span>';
+            
+            li.innerHTML = '<span class="blur">' + item[1] + '</span> – ' + item[0];
             list.appendChild(li);
+    
         });
 
         function loadQuestion() {
@@ -146,12 +124,40 @@
             if (userInput === correct) {
                 f.innerText = "✓ Corretto!";
                 f.style.color = "green";
-                ex.innerText = words[index][2] + " — " + words[index][3];
+                
+                ex.innerHTML = "<div><strong>" + words[index][2] + "</strong><br>" +
+                    words[index][3] + "</div>";
+
+                const explanationDiv = document.createElement("div");
+                explanationDiv.style.marginTop = "10px";
+
+                const helpers = {
+                    "ga": "ga indica il soggetto della frase.",
+                    "o": "o indica l'oggetto diretto dell'azione.",
+                    "ni": "ni indica la direzione, il luogo o il tempo.",
+                    "de": "de indica il luogo in cui avviene un'azione.",
+                    "wa": "wa è il tema della frase.",
+                    "to": "to significa 'con' o 'e'.",
+                    "desu": "desu è la forma cortese del verbo essere.",
+                    "suru": "suru è il verbo 'fare', spesso usato con nomi.",
+                    "masu": "masu è una forma cortese usata alla fine dei verbi."
+                };
+
+                Object.keys(helpers).forEach(key => {
+                    if (words[index][2].includes(" " + key + " ") || words[index][2].endsWith(key)) {
+                        const el = document.createElement("div");
+                        el.innerHTML = "<strong>" + key + "</strong>: " + helpers[key];
+                        explanationDiv.appendChild(el);
+                    }
+                });
+
+                ex.appendChild(explanationDiv);
+    
                 score++;
                 index++;
                 
-                f.innerText += " (Premi spazio per continuare)";
-                document.addEventListener("keydown", nextOnSpace);
+                f.innerText += " (Premi Q per continuare)";
+                document.addEventListener("keydown", nextOnQ);
     
             } else {
                 f.innerText = "✗ Sbagliato. Riprova.";
@@ -162,9 +168,9 @@
         
         loadQuestion();
 
-        function nextOnSpace(event) {
-            if (event.code === "Space") {
-                document.removeEventListener("keydown", nextOnSpace);
+        function nextOnQ(event) {
+            if (event.key.toLowerCase() === "q") {
+                document.removeEventListener("keydown", nextOnQ);
                 loadQuestion();
             }
         }

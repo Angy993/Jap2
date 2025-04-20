@@ -6,74 +6,80 @@
     <title>Quiz Romaji Interattivo</title>
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f0f2f5;
             margin: 0;
-            padding: 30px;
+            background: #f4f6f9;
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+        .layout {
+            display: flex;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px;
+            gap: 30px;
         }
         .container {
-            max-width: 800px;
-            margin: auto;
-            background: #fff;
+            flex: 1;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.05);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
         }
-        h1 {
+        .quiz-title {
+            font-size: 28px;
+            margin-bottom: 20px;
             text-align: center;
             color: #2a5d84;
         }
+        .question {
+            font-size: 22px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
         .input-group {
-            margin-top: 20px;
             text-align: center;
         }
         input {
-            font-size: 18px;
-            padding: 8px;
-            width: 300px;
+            font-size: 20px;
+            padding: 10px;
+            width: 320px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
         }
         button {
             font-size: 16px;
-            padding: 8px 20px;
+            padding: 10px 20px;
             margin-left: 10px;
             background: #2a5d84;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 6px;
         }
         .result {
-            margin-top: 30px;
             font-size: 18px;
+            margin-top: 30px;
+            line-height: 1.6;
         }
         .explanation {
             background: #eef3f8;
-            padding: 12px;
+            padding: 14px;
             margin-top: 15px;
             border-left: 4px solid #2a5d84;
-        }
-        .version {
-            position: fixed;
-            top: 10px;
-            right: 15px;
-            font-size: 13px;
-            color: #666;
-            font-style: italic;
-        }
-    
-        .layout {
-            display: flex;
-            gap: 30px;
+            border-radius: 4px;
         }
         .sidebar {
-            width: 300px;
-            padding: 20px;
+            width: 280px;
             background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 0 8px rgba(0,0,0,0.05);
-            font-size: 16px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.04);
+            padding: 25px;
+            height: fit-content;
         }
         .sidebar h3 {
             margin-top: 0;
+            font-size: 20px;
             color: #2a5d84;
         }
         .sidebar ul {
@@ -81,7 +87,7 @@
             padding-left: 0;
         }
         .sidebar li {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .blur {
             filter: blur(5px);
@@ -91,29 +97,74 @@
         .blur:hover {
             filter: blur(0);
         }
+        .version {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            font-size: 13px;
+            color: #888;
+            font-style: italic;
+        }
     </style>
 </head>
-
 <body>
-    <div class="version">Versione 2.4</div>
+    <div class="version">Versione 2.5</div>
     <div class="layout">
         <div class="container">
-    
-    <div class="version">Versione 2.0</div>
-    <div class="container">
-        <h1>Quiz Romaji</h1>
-        <div id="question"></div>
-        <div class="input-group">
-            <input type="text" id="userInput" placeholder="Scrivi in romaji">
-            <button onclick="checkAnswer()">Verifica</button>
+            <div class="quiz-title">Quiz di Romaji Giapponese</div>
+            <div id="question" class="question"></div>
+            <div class="input-group">
+                <input type="text" id="userInput" placeholder="Scrivi in romaji">
+                <button onclick="checkAnswer()">Verifica</button>
+            </div>
+            <div class="result" id="result"></div>
+            <div id="spiegazioni"></div>
         </div>
-        <div class="result" id="result"></div>
-        <div id="spiegazioni"></div>
+        <div class="sidebar">
+            <h3>Parole Imparate</h3>
+            <ul>
+<li><span class="blur">taberu</span> – Mangiare</li>
+<li><span class="blur">miru</span> – Guardare</li>
+<li><span class="blur">kiku</span> – Ascoltare</li>
+<li><span class="blur">nomu</span> – Bere</li>
+<li><span class="blur">ikiru</span> – Vivere</li>
+<li><span class="blur">neru</span> – Dormire</li>
+<li><span class="blur">hashiru</span> – Correre</li>
+<li><span class="blur">yomu</span> – Leggere</li>
+<li><span class="blur">kaeru</span> – Tornare</li>
+<li><span class="blur">kuru</span> – Venire</li>
+<li><span class="blur">iku</span> – Andare</li>
+<li><span class="blur">benkyou</span> – Studiare</li>
+<li><span class="blur">ryouri</span> – Cucinare</li>
+<li><span class="blur">asobu</span> – Giocare</li>
+<li><span class="blur">hanasu</span> – Parlare</li>
+<li><span class="blur">suru</span> – Fare</li>
+<li><span class="blur">tsukuru</span> – Creare</li>
+<li><span class="blur">mimasu</span> – Guardare (formale)</li>
+<li><span class="blur">kikimasu</span> – Ascoltare (formale)</li>
+<li><span class="blur">kaimasu</span> – Comprare</li>
+<li><span class="blur">aimasu</span> – Incontrare</li>
+<li><span class="blur">arimasu</span> – Esistere (oggetti)</li>
+<li><span class="blur">imasu</span> – Esistere (persone)</li>
+<li><span class="blur">desu</span> – Essere (formale)</li>
+<li><span class="blur">suki</span> – Piace</li>
+<li><span class="blur">kirai</span> – Non piace</li>
+<li><span class="blur">jouzu</span> – Bravo in</li>
+<li><span class="blur">heta</span> – Scarso in</li>
+<li><span class="blur">wakaru</span> – Capire</li>
+<li><span class="blur">shiru</span> – Conoscere</li>
+<li><span class="blur">oboeru</span> – Memorizzare</li>
+<li><span class="blur">wasuremasu</span> – Dimenticare</li>
+<li><span class="blur">dekiru</span> – Essere capace</li>
+<li><span class="blur">yaru</span> – Fare (casual)</li>
+<li><span class="blur">arau</span> – Lavare</li>
+
+            </ul>
+        </div>
     </div>
 
 <script>
-const data = [{"italiano": "Mangiare", "romaji": "taberu", "frase": "Watashi wa gohan o taberu.", "traduzione": "Mangio riso.", "spiegazioni": {"wa": {"descrizione": "Particella del tema, introduce l\u2019argomento della frase.", "uso": "Si usa per indicare di cosa si parla.", "esempio": "Watashi wa gakusei desu. \u2192 Io sono uno studente.", "nota": "Spesso si trova dopo il soggetto logico."}, "o": {"descrizione": "Particella dell\u2019oggetto diretto.", "uso": "Collega l\u2019oggetto al verbo.", "esempio": "Ringo o taberu. \u2192 Mangio una mela.", "nota": "Si scrive \u3092 ma si legge 'o'."}}}, {"italiano": "Guardare", "romaji": "miru", "frase": "Anime o miru.", "traduzione": "Guardo anime.", "spiegazioni": {"o": {"descrizione": "Particella dell\u2019oggetto diretto.", "uso": "Indica ci\u00f2 che riceve l\u2019azione.", "esempio": "Hon o yomu. \u2192 Leggo un libro.", "nota": "Sempre tra l\u2019oggetto e il verbo."}}}];
-
+const data = [{"italiano": "Mangiare", "romaji": "taberu", "frase": "Watashi wa gohan o taberu.", "traduzione": "Mangio riso.", "spiegazioni": {"wa": {"descrizione": "Particella del tema, introduce l\u2019argomento della frase.", "uso": "Si usa per indicare di cosa si parla.", "esempio": "Watashi wa gakusei desu. \u2192 Io sono uno studente.", "nota": "Spesso si trova dopo il soggetto logico."}, "o": {"descrizione": "Particella dell\u2019oggetto diretto.", "uso": "Collega l\u2019oggetto al verbo.", "esempio": "Ringo o taberu. \u2192 Mangio una mela.", "nota": "Si scrive \u3092 ma si legge 'o'."}}}, {"italiano": "Guardare", "romaji": "miru", "frase": "Anime o miru.", "traduzione": "Guardo anime.", "spiegazioni": {"o": {"descrizione": "Particella dell\u2019oggetto diretto.", "uso": "Indica ci\u00f2 che riceve l\u2019azione.", "esempio": "Hon o yomu. \u2192 Leggo un libro.", "nota": "Sempre tra l\u2019oggetto e il verbo."}}}, {"italiano": "Ascoltare", "romaji": "kiku", "frase": "kiku ...", "traduzione": "Azione: ascoltare", "spiegazioni": {}}, {"italiano": "Bere", "romaji": "nomu", "frase": "nomu ...", "traduzione": "Azione: bere", "spiegazioni": {}}, {"italiano": "Vivere", "romaji": "ikiru", "frase": "ikiru ...", "traduzione": "Azione: vivere", "spiegazioni": {}}, {"italiano": "Dormire", "romaji": "neru", "frase": "neru ...", "traduzione": "Azione: dormire", "spiegazioni": {}}, {"italiano": "Correre", "romaji": "hashiru", "frase": "hashiru ...", "traduzione": "Azione: correre", "spiegazioni": {}}, {"italiano": "Leggere", "romaji": "yomu", "frase": "yomu ...", "traduzione": "Azione: leggere", "spiegazioni": {}}, {"italiano": "Tornare", "romaji": "kaeru", "frase": "kaeru ...", "traduzione": "Azione: tornare", "spiegazioni": {}}, {"italiano": "Venire", "romaji": "kuru", "frase": "kuru ...", "traduzione": "Azione: venire", "spiegazioni": {}}, {"italiano": "Andare", "romaji": "iku", "frase": "iku ...", "traduzione": "Azione: andare", "spiegazioni": {}}, {"italiano": "Studiare", "romaji": "benkyou", "frase": "benkyou ...", "traduzione": "Azione: studiare", "spiegazioni": {}}, {"italiano": "Cucinare", "romaji": "ryouri", "frase": "ryouri ...", "traduzione": "Azione: cucinare", "spiegazioni": {}}, {"italiano": "Giocare", "romaji": "asobu", "frase": "asobu ...", "traduzione": "Azione: giocare", "spiegazioni": {}}, {"italiano": "Parlare", "romaji": "hanasu", "frase": "hanasu ...", "traduzione": "Azione: parlare", "spiegazioni": {}}, {"italiano": "Fare", "romaji": "suru", "frase": "suru ...", "traduzione": "Azione: fare", "spiegazioni": {}}, {"italiano": "Creare", "romaji": "tsukuru", "frase": "tsukuru ...", "traduzione": "Azione: creare", "spiegazioni": {}}, {"italiano": "Guardare (formale)", "romaji": "mimasu", "frase": "mimasu ...", "traduzione": "Azione: guardare (formale)", "spiegazioni": {}}, {"italiano": "Ascoltare (formale)", "romaji": "kikimasu", "frase": "kikimasu ...", "traduzione": "Azione: ascoltare (formale)", "spiegazioni": {}}, {"italiano": "Comprare", "romaji": "kaimasu", "frase": "kaimasu ...", "traduzione": "Azione: comprare", "spiegazioni": {}}, {"italiano": "Incontrare", "romaji": "aimasu", "frase": "aimasu ...", "traduzione": "Azione: incontrare", "spiegazioni": {}}, {"italiano": "Esistere (oggetti)", "romaji": "arimasu", "frase": "arimasu ...", "traduzione": "Azione: esistere (oggetti)", "spiegazioni": {}}, {"italiano": "Esistere (persone)", "romaji": "imasu", "frase": "imasu ...", "traduzione": "Azione: esistere (persone)", "spiegazioni": {}}, {"italiano": "Essere (formale)", "romaji": "desu", "frase": "desu ...", "traduzione": "Azione: essere (formale)", "spiegazioni": {}}, {"italiano": "Piace", "romaji": "suki", "frase": "suki ...", "traduzione": "Azione: piace", "spiegazioni": {}}, {"italiano": "Non piace", "romaji": "kirai", "frase": "kirai ...", "traduzione": "Azione: non piace", "spiegazioni": {}}, {"italiano": "Bravo in", "romaji": "jouzu", "frase": "jouzu ...", "traduzione": "Azione: bravo in", "spiegazioni": {}}, {"italiano": "Scarso in", "romaji": "heta", "frase": "heta ...", "traduzione": "Azione: scarso in", "spiegazioni": {}}, {"italiano": "Capire", "romaji": "wakaru", "frase": "wakaru ...", "traduzione": "Azione: capire", "spiegazioni": {}}, {"italiano": "Conoscere", "romaji": "shiru", "frase": "shiru ...", "traduzione": "Azione: conoscere", "spiegazioni": {}}, {"italiano": "Memorizzare", "romaji": "oboeru", "frase": "oboeru ...", "traduzione": "Azione: memorizzare", "spiegazioni": {}}, {"italiano": "Dimenticare", "romaji": "wasuremasu", "frase": "wasuremasu ...", "traduzione": "Azione: dimenticare", "spiegazioni": {}}, {"italiano": "Essere capace", "romaji": "dekiru", "frase": "dekiru ...", "traduzione": "Azione: essere capace", "spiegazioni": {}}, {"italiano": "Fare (casual)", "romaji": "yaru", "frase": "yaru ...", "traduzione": "Azione: fare (casual)", "spiegazioni": {}}, {"italiano": "Lavare", "romaji": "arau", "frase": "arau ...", "traduzione": "Azione: lavare", "spiegazioni": {}}];
 let index = 0;
 
 function loadQuestion() {
@@ -147,15 +198,10 @@ function checkAnswer() {
                           "<em><strong>Nota:</strong></em> " + s.nota + "</div>";
         }
         document.getElementById("spiegazioni").innerHTML = spiegaHtml;
-
-        index++;
-        
     } else {
         document.getElementById("result").innerHTML = "<span style='color:red;'>✗ Risposta sbagliata. Riprova.</span>";
     }
 }
-
-window.onload = loadQuestion;
 
 document.getElementById("userInput").addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
@@ -165,54 +211,12 @@ document.getElementById("userInput").addEventListener("keydown", function(event)
 
 document.addEventListener("keydown", function(event) {
     if (event.key.toLowerCase() === "q") {
+        index++;
         loadQuestion();
     }
 });
-</script>
-    
 
-        </div>
-        <div class="sidebar">
-<h3>Parole Imparate</h3>
-<ul>
-  <li><span class="blur">taberu</span> – Mangiare</li>
-  <li><span class="blur">miru</span> – Guardare</li>
-  <li><span class="blur">kiku</span> – Ascoltare</li>
-  <li><span class="blur">nomu</span> – Bere</li>
-  <li><span class="blur">ikiru</span> – Vivere</li>
-  <li><span class="blur">neru</span> – Dormire</li>
-  <li><span class="blur">hashiru</span> – Correre</li>
-  <li><span class="blur">yomu</span> – Leggere</li>
-  <li><span class="blur">kaeru</span> – Tornare</li>
-  <li><span class="blur">kuru</span> – Venire</li>
-  <li><span class="blur">iku</span> – Andare</li>
-  <li><span class="blur">benkyou</span> – Studiare</li>
-  <li><span class="blur">ryouri</span> – Cucinare</li>
-  <li><span class="blur">asobu</span> – Giocare</li>
-  <li><span class="blur">hanasu</span> – Parlare</li>
-  <li><span class="blur">suru</span> – Fare</li>
-  <li><span class="blur">tsukuru</span> – Creare</li>
-  <li><span class="blur">mimasu</span> – Guardare (formale)</li>
-  <li><span class="blur">kikimasu</span> – Ascoltare (formale)</li>
-  <li><span class="blur">kaimasu</span> – Comprare</li>
-  <li><span class="blur">aimasu</span> – Incontrare</li>
-  <li><span class="blur">arimasu</span> – Esistere (oggetti)</li>
-  <li><span class="blur">imasu</span> – Esistere (persone)</li>
-  <li><span class="blur">desu</span> – Essere (formale)</li>
-  <li><span class="blur">suki</span> – Piace</li>
-  <li><span class="blur">kirai</span> – Non piace</li>
-  <li><span class="blur">jouzu</span> – Bravo in</li>
-  <li><span class="blur">heta</span> – Scarso in</li>
-  <li><span class="blur">wakaru</span> – Capire</li>
-  <li><span class="blur">shiru</span> – Conoscere</li>
-  <li><span class="blur">oboeru</span> – Memorizzare</li>
-  <li><span class="blur">wasuremasu</span> – Dimenticare</li>
-  <li><span class="blur">dekiru</span> – Essere capace</li>
-  <li><span class="blur">yaru</span> – Fare (casual)</li>
-  <li><span class="blur">arau</span> – Lavare</li>
-</ul>
-</div>
-    </div>
+window.onload = loadQuestion;
+</script>
 </body>
-    
 </html>

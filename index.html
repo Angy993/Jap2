@@ -1,144 +1,589 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <title>Quiz Romaji Interattivo</title>
-  <style>
-    body { margin: 0; background: #f4f6f9; font-family: 'Helvetica Neue', sans-serif; }
-    .layout { display: flex; max-width: 1300px; margin: 0 auto; padding: 40px; gap: 30px; }
-    .container { flex: 1; background: #fff; border-radius: 12px; box-shadow: 0 0 12px rgba(0,0,0,0.05); padding: 30px; }
-    .quiz-title { font-size: 28px; margin-bottom: 20px; text-align: center; color: #2a5d84; }
-    .question { font-size: 22px; text-align: center; margin-bottom: 15px; }
-    .input-group { text-align: center; }
-    input { font-size: 20px; padding: 10px; width: 320px; border: 1px solid #ccc; border-radius: 6px; }
-    button { font-size: 16px; padding: 10px 20px; margin-left: 10px; background: #2a5d84; color: white; border: none; border-radius: 6px; }
-    .result { font-size: 18px; margin-top: 30px; line-height: 1.6; }
-    .explanation { background: #eef3f8; padding: 14px; margin-top: 15px; border-left: 4px solid #2a5d84; border-radius: 4px; }
-    .sidebar { width: 280px; background: #fff; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.04); padding: 25px; height: fit-content; }
-    .sidebar h3 { margin-top: 0; font-size: 20px; color: #2a5d84; }
-    .sidebar ul { list-style: none; padding-left: 0; }
-    .sidebar li { margin-bottom: 10px; }
-    .blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
-    .blur:hover { filter: blur(0); }
-    .version { position: fixed; top: 10px; right: 20px; font-size: 13px; color: #888; font-style: italic; }
-  </style>
-</head>
-<body>
-  <div class="version">Versione 3.5</div>
-  <div class="layout">
-    <div class="container">
-      <div class="quiz-title">Quiz di Romaji Giapponese</div>
-      <div id="question" class="question"></div>
-      <div class="input-group">
-        <input type="text" id="userInput" placeholder="Scrivi in romaji">
-        <button onclick="checkAnswer()">Verifica</button>
-      </div>
-      <div class="result" id="result"></div>
-      <div id="spiegazioni"></div>
-    </div>
-    <div class="sidebar">
-      <h3>Parole Imparate</h3>
-      <ul id="paroleSidebar"></ul>
-    </div>
-  </div>
-  <script>
-    const data = [
-      {"italiano":"Mangiare","romaji":"taberu","frase":"Watashi wa gohan o taberu.","traduzione":"Mangio riso.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa gakusei desu.","nota":"Si scrive は ma si legge 'wa'."},"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Ringo o taberu.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Guardare","romaji":"miru","frase":"Anime o miru.","traduzione":"Guardo anime.","spiegazioni":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Hon o yomu.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Ascoltare","romaji":"kiku","frase":"Watashi wa ongaku o kiku.","traduzione":"Ascolto musica.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa gakusei desu.","nota":"Si scrive は ma si legge 'wa'."},"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Ongaku o kiku.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Bere","romaji":"nomu","frase":"Watashi wa mizu o nomu.","traduzione":"Bevo acqua.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa gakusei desu.","nota":"Si scrive は ma si legge 'wa'."},"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Mizu o nomu.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Vivere","romaji":"ikiru","frase":"Watashi wa ikiru.","traduzione":"Io vivo.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa gakusei desu.","nota":"Si scrive は ma si legge 'wa'."}}},
-      {"italiano":"Dormire","romaji":"neru","frase":"Yoru wa neru.","traduzione":"La notte dormo.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa gakusei desu.","nota":"Si scrive は ma si legge 'wa'."}}},
-      {"italiano":"Correre","romaji":"hashiru","frase":"Watashi wa hashiru.","traduzione":"Corro.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa gakusei desu.","nota":"Si scrive は ma si legge 'wa'."}}},
-      {"italiano":"Leggere","romaji":"yomu","frase":"Hon o yomu.","traduzione":"Leggo un libro.","spiegazioni":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Hon o yomu.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Tornare","romaji":"kaeru","frase":"Watashi wa uchi ni kaeru.","traduzione":"Torno a casa.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa gakusei desu.","nota":"Si scrive は ma si legge 'wa'."},"ni":{"descrizione":"Particella di direzione/oggetto indiretto.","uso":"Indica direzione o ricevente indiretto.","esempio":"Tomodachi ni aimasu.","nota":"Si scrive に ma si legge 'ni'."}}},
-      {"italiano":"Venire","romaji":"kuru","frase":"Tomodachi ga kuru.","traduzione":"L'amico viene.","spiegazioni":{"ga":{"descrizione":"Particella soggetto.","uso":"Indica il soggetto o tema principale.","esempio":"Kare ga kimasu.","nota":"Si scrive が e si legge 'ga'."}}},
-      {"italiano":"Andare","romaji":"iku","frase":"Watashi wa gakko ni iku.","traduzione":"Vado a scuola.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa gakusei desu.","nota":"Si scrive は ma si legge 'wa'."},"ni":{"descrizione":"Particella di direzione/oggetto indiretto.","uso":"Indica direzione o ricevente indiretto.","esempio":"Tomodachi ni aimasu.","nota":"Si scrive に ma si legge 'ni'."}}},
-      {"italiano":"Studiare","romaji":"benkyou","frase":"Watashi wa nihongo o benkyou suru.","traduzione":"Studio giapponese.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa gakusei desu.","nota":"Si scrive は ma si legge 'wa'."},"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Nihongo o benkyou suru.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Cucinare","romaji":"ryouri","frase":"Watashi wa ryouri o suru.","traduzione":"Cucino.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa gakusei desu.","nota":"Si scrive は ma si legge 'wa'."},"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Ryouri o suru.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Giocare","romaji":"asobu","frase":"Kodomo wa asobu.","traduzione":"Il bambino gioca.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Kodomo wa asobu.","nota":"Si scrive は ma si legge 'wa'."}}},
-      {"italiano":"Parlare","romaji":"hanasu","frase":"Nihongo o hanasu.","traduzione":"Parlo giapponese.","spiegazioni":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Nihongo o hanasu.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Fare","romaji":"suru","frase":"Watashi wa undou o suru.","traduzione":"Faccio esercizio.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa undou o suru.","nota":"Si scrive は ma si legge 'wa'."},"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Undou o suru.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Creare","romaji":"tsukuru","frase":"Watashi wa keeki o tsukuru.","traduzione":"Preparo una torta.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa keeki o tsukuru.","nota":"Si scrive は ma si legge 'wa'."},"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Keeki o tsukuru.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Guardare (formale)","romaji":"mimasu","frase":"Anime o mimasu.","traduzione":"Guardo anime (formale).","spiegazioni":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Anime o mimasu.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Ascoltare (formale)","romaji":"kikimasu","frase":"Ongaku o kikimasu.","traduzione":"Ascolto musica (formale).","spiegazioni":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Ongaku o kikimasu.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Comprare","romaji":"kaimasu","frase":"Kutsu o kaimasu.","traduzione":"Compro scarpe.","spiegazioni":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Kutsu o kaimasu.","nota":"Si scrive を ma si legge 'o'."}}},      {"italiano":"Incontrare","romaji":"aimasu","frase":"Tomodachi ni aimasu.","traduzione":"Incontro un amico.","spiegazioni":{"ni":{"descrizione":"Particella di direzione/oggetto indiretto.","uso":"Indica direzione o ricevente indiretto.","esempio":"Tomodachi ni aimasu.","nota":"Si scrive に ma si legge 'ni'."}}},
-      {"italiano":"Esistere (oggetti)","romaji":"arimasu","frase":"Tsukue ga arimasu.","traduzione":"C'è una scrivania.","spiegazioni":{"ga":{"descrizione":"Particella soggetto.","uso":"Indica il soggetto o tema principale.","esempio":"Tsukue ga arimasu.","nota":"Si scrive が e si legge 'ga'."}}},
-      {"italiano":"Esistere (persone)","romaji":"imasu","frase":"Sensei ga imasu.","traduzione":"C'è l'insegnante.","spiegazioni":{"ga":{"descrizione":"Particella soggetto.","uso":"Indica il soggetto o tema principale.","esempio":"Sensei ga imasu.","nota":"Si scrive が e si legge 'ga'."}}},
-      {"italiano":"Essere (formale)","romaji":"desu","frase":"Watashi wa gakusei desu.","traduzione":"Sono uno studente.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa gakusei desu.","nota":"Si scrive は ma si legge 'wa'."}}},
-      {"italiano":"Piace","romaji":"suki","frase":"Anime ga suki desu.","traduzione":"Mi piacciono gli anime.","spiegazioni":{"ga":{"descrizione":"Particella soggetto.","uso":"Indica il soggetto o tema principale.","esempio":"Anime ga suki desu.","nota":"Si scrive が e si legge 'ga'."}}},
-      {"italiano":"Non piace","romaji":"kirai","frase":"Ebi ga kirai desu.","traduzione":"Non mi piacciono i gamberi.","spiegazioni":{"ga":{"descrizione":"Particella soggetto.","uso":"Indica il soggetto o tema principale.","esempio":"Ebi ga kirai desu.","nota":"Si scrive が e si legge 'ga'."}}},
-      {"italiano":"Bravo in","romaji":"jouzu","frase":"Kare wa tenisu ga jouzu desu.","traduzione":"Lui è bravo a tennis.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Kare wa tenisu ga jouzu desu.","nota":"Si scrive は ma si legge 'wa'."},"ga":{"descrizione":"Particella soggetto.","uso":"Indica il soggetto o tema principale.","esempio":"Kare wa tenisu ga jouzu desu.","nota":"Si scrive が e si legge 'ga'."}}},
-      {"italiano":"Scarso in","romaji":"heta","frase":"Watashi wa dansu ga heta desu.","traduzione":"Sono scarso nel ballo.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa dansu ga heta desu.","nota":"Si scrive は ma si legge 'wa'."},"ga":{"descrizione":"Particella soggetto.","uso":"Indica il soggetto o tema principale.","esempio":"Watashi wa dansu ga heta desu.","nota":"Si scrive が e si legge 'ga'."}}},
-      {"italiano":"Capire","romaji":"wakaru","frase":"Nihongo ga wakaru.","traduzione":"Capisco il giapponese.","spiegazioni":{"ga":{"descrizione":"Particella soggetto.","uso":"Indica il soggetto o tema principale.","esempio":"Nihongo ga wakaru.","nota":"Si scrive が e si legge 'ga'."}}},
-      {"italiano":"Conoscere","romaji":"shiru","frase":"Kare o shitteimasu.","traduzione":"Lo conosco.","spiegazioni":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Kare o shitteimasu.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Memorizzare","romaji":"oboeru","frase":"Kotoba o oboeru.","traduzione":"Memorizzo parole.","spiegazioni":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Kotoba o oboeru.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Dimenticare","romaji":"wasuremasu","frase":"Namae o wasuremasu.","traduzione":"Dimentico il nome.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Namae wa wasuremasu.","nota":"Si scrive は ma si legge 'wa'."},"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Namae o wasuremasu.","nota":"Si scrive を ma si legge 'o'."}}},
-      {"italiano":"Essere capace","romaji":"dekiru","frase":"Watashi wa eigo ga dekiru.","traduzione":"So parlare inglese.","spiegazioni":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa eigo ga dekiru.","nota":"Si scrive は ma si legge 'wa'."},"ga":{"descrizione":"Particella soggetto.","uso":"Indica il soggetto o tema principale.","esempio":"Watashi wa eigo ga dekiru.","nota":"Si scrive が e si legge 'ga'."}}},
-      {"italiano":"Fare (casual)","romaji":"yaru","frase":"Sugu yaru.","traduzione":"Lo faccio subito.","spiegazioni":{}},
-      {"italiano":"Lavare","romaji":"arau","frase":"Te o arau.","traduzione":"Lavo le mani.","spiegazioni":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Te o arau.","nota":"Si scrive を ma si legge 'o'."}}}
-    ];
-
-    let index = 0;
-
-    function loadQuestion() {
-      document.getElementById("userInput").value = "";
-      document.getElementById("result").innerHTML = "";
-      document.getElementById("spiegazioni").innerHTML = "";
-      if (index < data.length) {
-        document.getElementById("question").innerHTML = "<strong>Traduci:</strong> " + data[index].italiano;
-      } else {
-        document.getElementById("question").innerHTML = "Hai completato il quiz!";
-        document.querySelector(".input-group").style.display = "none";
+const data = [
+  {
+    "italiano": "Mangiare",
+    "romaji": "taberu",
+    "frase": "Watashi wa sushi o taberu.",
+    "traduzione": "Mangio sushi.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
       }
     }
-
-    function checkAnswer() {
-      const input = document.getElementById("userInput").value.trim().toLowerCase();
-      const correct = data[index].romaji.toLowerCase();
-      if (input === correct) {
-        let result = "<strong>Frase:</strong><br>" + data[index].frase + "<br><em>" + data[index].traduzione + "</em><br>";
-        document.getElementById("result").innerHTML = result;
-        const spiegazioni = data[index].spiegazioni || {};
-        let spiegaHtml = "";
-        for (let part in spiegazioni) {
-          const s = spiegazioni[part];
-          spiegaHtml += "<div class='explanation'><strong>" + part + "</strong><br>" +
-                        "<em><strong>Descrizione:</strong></em> " + s.descrizione + "<br>" +
-                        "<em><strong>Uso:</strong></em> " + s.uso + "<br>" +
-                        "<em><strong>Esempio:</strong></em> " + s.esempio + "<br>" +
-                        "<em><strong>Nota:</strong></em> " + s.nota + "</div>";
-        }
-        document.getElementById("spiegazioni").innerHTML = spiegaHtml;
-      } else {
-        document.getElementById("result").innerHTML = "<span style='color:red;'>✗ Risposta sbagliata. Riprova.</span>";
+  },
+  {
+    "italiano": "Bere",
+    "romaji": "nomu",
+    "frase": "Watashi wa mizu o nomu.",
+    "traduzione": "Bevo acqua.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
       }
     }
-
-    function popolaSidebar() {
-      const sidebar = document.getElementById("paroleSidebar");
-      data.forEach(entry => {
-        const li = document.createElement("li");
-        li.innerHTML = `<span class="blur">${entry.romaji}</span> – ${entry.italiano}`;
-        sidebar.appendChild(li);
-      });
-    }
-
-    document.getElementById("userInput").addEventListener("keydown", function(event) {
-      if (event.key === "Enter") checkAnswer();
-    });
-
-    document.addEventListener("keydown", function(event) {
-      if (event.key.toLowerCase() === "q") {
-        index++;
-        loadQuestion();
+  },
+  {
+    "italiano": "Guardare",
+    "romaji": "miru",
+    "frase": "Anime o miru.",
+    "traduzione": "Guardo anime.",
+    "spiegazioni": {
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      },
+      "ni": {
+        "descrizione": "Particella di direzione/oggetto indiretto.",
+        "uso": "Indica direzione o ricevente indiretto.",
+        "esempio": "Tomodachi ni aimasu.",
+        "nota": "Si scrive に ma si legge 'ni'."
       }
-    });
-
-    window.onload = () => {
-      loadQuestion();
-      popolaSidebar();
-    };
-  </script>
-</body>
-</html>
+    }
+  },
+  {
+    "italiano": "Anime",
+    "romaji": "anime",
+    "frase": "Anime wa tanoshii.",
+    "traduzione": "Gli anime sono divertenti.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      },
+      "ni": {
+        "descrizione": "Particella di direzione/oggetto indiretto.",
+        "uso": "Indica direzione o ricevente indiretto.",
+        "esempio": "Tomodachi ni aimasu.",
+        "nota": "Si scrive に ma si legge 'ni'."
+      }
+    }
+  },
+  {
+    "italiano": "Acqua",
+    "romaji": "mizu",
+    "frase": "Mizu wa tsumetai.",
+    "traduzione": "L'acqua è fredda.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      }
+    }
+  },
+  {
+    "italiano": "Andare",
+    "romaji": "iku",
+    "frase": "Watashi wa gakkou ni iku.",
+    "traduzione": "Vado a scuola.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      },
+      "ni": {
+        "descrizione": "Particella di direzione/oggetto indiretto.",
+        "uso": "Indica direzione o ricevente indiretto.",
+        "esempio": "Tomodachi ni aimasu.",
+        "nota": "Si scrive に ma si legge 'ni'."
+      },
+      "ga": {
+        "descrizione": "Particella del soggetto.",
+        "uso": "Indica il soggetto della frase.",
+        "esempio": "Kare ga kuru.",
+        "nota": "Si scrive が e si legge 'ga'."
+      }
+    }
+  },
+  {
+    "italiano": "Scuola",
+    "romaji": "gakkou",
+    "frase": "Gakkou wa ookii.",
+    "traduzione": "La scuola è grande.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Amico",
+    "romaji": "tomodachi",
+    "frase": "Tomodachi wa yasashii.",
+    "traduzione": "L'amico è gentile.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Giocare",
+    "romaji": "asobu",
+    "frase": "Kodomo wa asobu.",
+    "traduzione": "I bambini giocano.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Divertente",
+    "romaji": "tanoshii",
+    "frase": "Asobi wa tanoshii.",
+    "traduzione": "Giocare è divertente.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Parlare",
+    "romaji": "hanasu",
+    "frase": "Watashi wa sensei to hanasu.",
+    "traduzione": "Parlo con l'insegnante.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      },
+      "to": {
+        "descrizione": "Particella di accompagnamento.",
+        "uso": "Indica con chi si fa qualcosa.",
+        "esempio": "Tomodachi to hanasu.",
+        "nota": "Si scrive と e si legge 'to'."
+      }
+    }
+  },
+  {
+    "italiano": "Ascoltare",
+    "romaji": "kiku",
+    "frase": "Watashi wa ongaku o kiku.",
+    "traduzione": "Ascolto musica.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      },
+      "ga": {
+        "descrizione": "Particella del soggetto.",
+        "uso": "Indica il soggetto della frase.",
+        "esempio": "Kare ga kuru.",
+        "nota": "Si scrive が e si legge 'ga'."
+      }
+    }
+  },
+  {
+    "italiano": "Insegnante",
+    "romaji": "sensei",
+    "frase": "Sensei wa shinsetsu desu.",
+    "traduzione": "L'insegnante è gentile.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      }
+    }
+  },
+  {
+    "italiano": "Oggi",
+    "romaji": "kyou",
+    "frase": "Kyou wa benkyou suru.",
+    "traduzione": "Oggi studio.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Musica",
+    "romaji": "ongaku",
+    "frase": "Ongaku wa suki desu.",
+    "traduzione": "Mi piace la musica.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "ga": {
+        "descrizione": "Particella del soggetto.",
+        "uso": "Indica il soggetto della frase.",
+        "esempio": "Kare ga kuru.",
+        "nota": "Si scrive が e si legge 'ga'."
+      }
+    }
+  },
+  {
+    "italiano": "Studiare",
+    "romaji": "benkyou",
+    "frase": "Watashi wa nihongo o benkyou suru.",
+    "traduzione": "Studio giapponese.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      },
+      "ni": {
+        "descrizione": "Particella di direzione/oggetto indiretto.",
+        "uso": "Indica direzione o ricevente indiretto.",
+        "esempio": "Tomodachi ni aimasu.",
+        "nota": "Si scrive に ma si legge 'ni'."
+      }
+    }
+  },
+  {
+    "italiano": "Orologio",
+    "romaji": "tokei",
+    "frase": "Tokei ga arimasu.",
+    "traduzione": "C'è un orologio.",
+    "spiegazioni": {
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      },
+      "ga": {
+        "descrizione": "Particella del soggetto.",
+        "uso": "Indica il soggetto della frase.",
+        "esempio": "Kare ga kuru.",
+        "nota": "Si scrive が e si legge 'ga'."
+      }
+    }
+  },
+  {
+    "italiano": "Casa",
+    "romaji": "ie",
+    "frase": "Watashi wa ie ni kaeru.",
+    "traduzione": "Torno a casa.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "ni": {
+        "descrizione": "Particella di direzione/oggetto indiretto.",
+        "uso": "Indica direzione o ricevente indiretto.",
+        "esempio": "Tomodachi ni aimasu.",
+        "nota": "Si scrive に ma si legge 'ni'."
+      }
+    }
+  },
+  {
+    "italiano": "Treno",
+    "romaji": "densha",
+    "frase": "Densha de iku.",
+    "traduzione": "Vado in treno.",
+    "spiegazioni": {}
+  },
+  {
+    "italiano": "Con un amico",
+    "romaji": "tomodachi to",
+    "frase": "Tomodachi to asobu.",
+    "traduzione": "Gioco con un amico.",
+    "spiegazioni": {
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      },
+      "to": {
+        "descrizione": "Particella di accompagnamento.",
+        "uso": "Indica con chi si fa qualcosa.",
+        "esempio": "Tomodachi to hanasu.",
+        "nota": "Si scrive と e si legge 'to'."
+      }
+    }
+  },
+  {
+    "italiano": "Cucinare",
+    "romaji": "ryouri",
+    "frase": "Watashi wa ryouri o suru.",
+    "traduzione": "Cucino.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Fare spese",
+    "romaji": "kaimono",
+    "frase": "Kaimono o suru.",
+    "traduzione": "Faccio spese.",
+    "spiegazioni": {
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Dormire",
+    "romaji": "neru",
+    "frase": "Yoru wa neru.",
+    "traduzione": "La notte dormo.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Svegliarsi",
+    "romaji": "okiru",
+    "frase": "Watashi wa rokuji ni okiru.",
+    "traduzione": "Mi sveglio alle sei.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      },
+      "ni": {
+        "descrizione": "Particella di direzione/oggetto indiretto.",
+        "uso": "Indica direzione o ricevente indiretto.",
+        "esempio": "Tomodachi ni aimasu.",
+        "nota": "Si scrive に ma si legge 'ni'."
+      }
+    }
+  },
+  {
+    "italiano": "Pranzo",
+    "romaji": "hirugohan",
+    "frase": "Hirugohan o taberu.",
+    "traduzione": "Mangio il pranzo.",
+    "spiegazioni": {
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Aprire",
+    "romaji": "akeru",
+    "frase": "Mado o akeru.",
+    "traduzione": "Apro la finestra.",
+    "spiegazioni": {
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Chiudere",
+    "romaji": "shimeru",
+    "frase": "Doa o shimeru.",
+    "traduzione": "Chiudo la porta.",
+    "spiegazioni": {
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Prestare",
+    "romaji": "kasu",
+    "frase": "Watashi wa hon o kasu.",
+    "traduzione": "Presto un libro.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Prendere in prestito",
+    "romaji": "kariru",
+    "frase": "Hon o kariru.",
+    "traduzione": "Prendo in prestito un libro.",
+    "spiegazioni": {
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  },
+  {
+    "italiano": "Comodo",
+    "romaji": "benri",
+    "frase": "Konpyuutaa wa benri da.",
+    "traduzione": "Il computer è comodo.",
+    "spiegazioni": {
+      "wa": {
+        "descrizione": "Particella del tema.",
+        "uso": "Indica l’argomento principale della frase.",
+        "esempio": "Watashi wa gakusei desu.",
+        "nota": "Si scrive は ma si legge 'wa'."
+      },
+      "o": {
+        "descrizione": "Particella dell’oggetto diretto.",
+        "uso": "Indica ciò che riceve l’azione.",
+        "esempio": "Ringo o taberu.",
+        "nota": "Si scrive を ma si legge 'o'."
+      }
+    }
+  }
+];

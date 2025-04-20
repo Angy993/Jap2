@@ -61,8 +61,21 @@
             font-weight: bold;
         }
     </style>
+
+    <style>
+        .version {
+            position: fixed;
+            top: 10px;
+            right: 15px;
+            font-size: 13px;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
 </head>
+    
 <body>
+<div class="version">Versione 1.0</div>
     <div class="quiz-container">
         <h2>Traduci in romaji</h2>
         <div id="question"></div>
@@ -146,7 +159,10 @@
                 Object.keys(helpers).forEach(key => {
                     if (words[index][2].includes(" " + key + " ") || words[index][2].endsWith(key)) {
                         const el = document.createElement("div");
-                        el.innerHTML = "<strong>" + key + "</strong>: " + helpers[key];
+                        el.innerHTML = 
+    "<div style='margin-top: 10px; padding: 10px; background: #f8f9fa; border-left: 4px solid #2a5d84;'>"
+    + "<strong>" + key + "</strong>: " + helpers[key] + "</div>";
+    
                         explanationDiv.appendChild(el);
                     }
                 });

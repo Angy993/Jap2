@@ -26,6 +26,7 @@
 </head>
 <body>
   <div class="version">Versione 4.0</div>
+  <div id="score" style="position:fixed; top:10px; left:20px; font-size:14px; color:#2a5d84;"><strong>Punteggio: 0</strong></div>
   <div class="layout">
     <div class="container">
       <div class="quiz-title">Quiz di Romaji Giapponese</div>
@@ -45,6 +46,13 @@
   <script src="new_romaji_quiz_data.js"></script>
   <script>
     let index = 0;
+
+  let score = 0;
+
+  function updateScore() {
+    document.getElementById("score").innerText = `Punteggio: ${score}`;
+  }
+
 
     function loadQuestion() {
       document.getElementById("userInput").value = "";
@@ -74,6 +82,8 @@
                         "<em><strong>Esempio:</strong></em> " + s.esempio + "<br>" +
                         "<em><strong>Nota:</strong></em> " + s.nota + "</div>";
         }
+        score++;
+        updateScore();
         document.getElementById("spiegazioni").innerHTML = spiegaHtml;
       } else {
         document.getElementById("result").innerHTML = "<span style='color:red;'>✗ Risposta sbagliata. Riprova.</span>";
@@ -103,6 +113,7 @@
     window.onload = () => {
       loadQuestion();
       popolaSidebar();
+      updateScore();
     };
   </script>
 </body>

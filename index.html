@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Quiz Romaji Multilanguage Full</title>
+  <title>Quiz Romaji Multilang Full</title>
   <style>
     body { margin: 0; background: #f4f6f9; font-family: 'Helvetica Neue', sans-serif; }
     .layout { display: flex; max-width: 1300px; margin: 0 auto; padding: 40px; gap: 30px; }
@@ -12,20 +12,40 @@
     .question { font-size: 22px; text-align: center; margin-bottom: 15px; }
     .input-group { text-align: center; }
     input { font-size: 20px; padding: 10px; width: 320px; border: 1px solid #ccc; border-radius: 6px; }
-    button { font-size: 16px; padding: 10px 20px; margin-left: 10px; background: #2a5d84; color: white; border: none; border-radius: 6px; }
+    button {
+      font-size: 16px; padding: 10px 20px; margin-left: 10px;
+      background: #2a5d84; color: white; border: none; border-radius: 6px;
+      transition: transform 0.2s ease-out;
+    }
+    button:hover { transform: scale(1.05); }
     .result { font-size: 18px; margin-top: 30px; line-height: 1.6; }
-    .explanation { background: #eef3f8; padding: 14px; margin-top: 15px; border-left: 4px solid #2a5d84; border-radius: 4px; }
-    .sidebar { width: 280px; background: #fff; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.04); padding: 25px; height: fit-content; }
+    .explanation {
+      background: #eef3f8; padding: 14px; margin-top: 15px;
+      border-left: 4px solid #2a5d84; border-radius: 4px;
+      animation: fadeIn 0.3s ease-out;
+    }
+    .sidebar { width: 280px; background: #fff; border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.04); padding: 25px; height: fit-content;
+    }
     .sidebar h3 { margin-top: 0; font-size: 20px; color: #2a5d84; }
     .sidebar ul { list-style: none; padding-left: 0; }
     .sidebar li { margin-bottom: 10px; }
     .blur { filter: blur(5px); transition: filter 0.3s; cursor: pointer; }
     .blur:hover { filter: blur(0); }
+    .highlight { animation: highlight 0.5s ease-out; }
     .version { position: fixed; top: 10px; right: 20px; font-size: 13px; color: #888; font-style: italic; }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    @keyframes highlight {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
   </style>
 </head>
 <body>
-  <div class="version">Versione Multilang Full 2.0</div>
+  <div class="version">Versione Multilang Full 2.1</div>
   <div class="layout">
     <div class="container">
       <div class="quiz-title">Quiz di Romaji Giapponese</div>
@@ -46,96 +66,43 @@
     </div>
     <div class="sidebar">
       <h3>Parole Imparate</h3>
-      <ul>
-        <li><span class="blur">taberu</span> – Mangiare</li>
-        <li><span class="blur">miru</span> – Guardare</li>
-        <li><span class="blur">kiku</span> – Ascoltare</li>
-        <li><span class="blur">nomu</span> – Bere</li>
-        <li><span class="blur">ikiru</span> – Vivere</li>
-        <li><span class="blur">neru</span> – Dormire</li>
-        <li><span class="blur">hashiru</span> – Correre</li>
-        <li><span class="blur">yomu</span> – Leggere</li>
-        <li><span class="blur">kaeru</span> – Tornare</li>
-        <li><span class="blur">kuru</span> – Venire</li>
-        <li><span class="blur">iku</span> – Andare</li>
-        <li><span class="blur">benkyou</span> – Studiare</li>
-        <li><span class="blur">ryouri</span> – Cucinare</li>
-        <li><span class="blur">asobu</span> – Giocare</li>
-        <li><span class="blur">hanasu</span> – Parlare</li>
-        <li><span class="blur">suru</span> – Fare</li>
-        <li><span class="blur">tsukuru</span> – Creare</li>
-        <li><span class="blur">mimasu</span> – Guardare (formale)</li>
-        <li><span class="blur">kikimasu</span> – Ascoltare (formale)</li>
-        <li><span class="blur">kaimasu</span> – Comprare</li>
-        <li><span class="blur">aimasu</span> – Incontrare</li>
-        <li><span class="blur">arimasu</span> – Esistere (oggetti)</li>
-        <li><span class="blur">imasu</span> – Esistere (persone)</li>
-        <li><span class="blur">desu</span> – Essere (formale)</li>
-        <li><span class="blur">suki</span> – Piace</li>
-        <li><span class="blur">kirai</span> – Non piace</li>
-        <li><span class="blur">jouzu</span> – Bravo in</li>
-        <li><span class="blur">heta</span> – Scarso in</li>
-        <li><span class="blur">wakaru</span> – Capire</li>
-        <li><span class="blur">shiru</span> – Conoscere</li>
-        <li><span class="blur">oboeru</span> – Memorizzare</li>
-        <li><span class="blur">wasuremasu</span> – Dimenticare</li>
-        <li><span class="blur">dekiru</span> – Essere capace</li>
-        <li><span class="blur">yaru</span> – Fare (casual)</li>
-        <li><span class="blur">arau</span> – Lavare</li>
-      </ul>
+      <ul id="paroleSidebar"></ul>
     </div>
   </div>
 
   <script>
+    // Dataset con emoji
     const data = [
-      {"italiano":"Mangiare","english":"To eat","romaji":"taberu","frase":"Watashi wa gohan o taberu.","traduzioneIt":"Mangio riso.","traduzioneEn":"I eat rice.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Si usa per indicare di cosa si parla.","esempio":"Watashi wa gakusei desu. → Io sono uno studente.","nota":"Spesso si trova dopo il soggetto logico."},"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Collega l’oggetto al verbo.","esempio":"Ringo o taberu. → Mangio una mela.","nota":"Si scrive を ma si legge 'o'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks the topic of the sentence.","esempio":"Watashi wa gakusei desu. → I am a student.","nota":"は is read 'wa'."},"o":{"descrizione":"Direct object particle.","uso":"Connects the object to the verb.","esempio":"Ringo o taberu. → I eat an apple.","nota":"を is read 'o'."}}},
-      {"italiano":"Guardare","english":"To watch","romaji":"miru","frase":"Anime o miru.","traduzioneIt":"Guardo anime.","traduzioneEn":"I watch anime.","spiegazioniIt":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Hon o yomu. → Leggo un libro.","nota":"Sempre tra l’oggetto e il verbo."}},"spiegazioniEn":{"o":{"descrizione":"Direct object particle.","uso":"Marks the direct object.","esempio":"Hon o yomu. → I read a book.","nota":"を is read 'o'."}}},
-      {"italiano":"Ascoltare","english":"To listen","romaji":"kiku","frase":"Watashi wa ongaku o kiku.","traduzioneIt":"Ascolto musica.","traduzioneEn":"I listen to music.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento principale della frase.","esempio":"Watashi wa gakusei desu.","nota":"は si legge 'wa'."},"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Ongaku o kiku.","nota":"を si legge 'o'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks the topic.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."},"o":{"descrizione":"Direct object particle.","uso":"Marks the direct object.","esempio":"Ongaku o kiku.","nota":"を read 'o'."}}},
-      {"italiano":"Bere","english":"To drink","romaji":"nomu","frase":"Watashi wa mizu o nomu.","traduzioneIt":"Bevo acqua.","traduzioneEn":"I drink water.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento della frase.","esempio":"Watashi wa gakusei desu.","nota":"は si legge 'wa'."},"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Mizu o nomu.","nota":"を si legge 'o'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks the topic.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."},"o":{"descrizione":"Direct object particle.","uso":"Marks the direct object.","esempio":"Mizu o nomu.","nota":"を read 'o'."}}},
-      {"italiano":"Vivere","english":"To live","romaji":"ikiru","frase":"Watashi wa ikiru.","traduzioneIt":"Io vivo.","traduzioneEn":"I live.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento.","esempio":"Watashi wa gakusei desu.","nota":"は si legge 'wa'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks the topic.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."}}},
-      {"italiano":"Dormire","english":"To sleep","romaji":"neru","frase":"Yoru wa neru.","traduzioneIt":"La notte dormo.","traduzioneEn":"I sleep at night.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento.","esempio":"Watashi wa gakusei desu.","nota":"は si legge 'wa'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks the topic.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."}}},
-      {"italiano":"Correre","english":"To run","romaji":"hashiru","frase":"Watashi wa hashiru.","traduzioneIt":"Corro.","traduzioneEn":"I run.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica l’argomento.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks the topic.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."}}},
-      {"italiano":"Leggere","english":"To read","romaji":"yomu","frase":"Hon o yomu.","traduzioneIt":"Leggo un libro.","traduzioneEn":"I read a book.","spiegazioniIt":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica ciò che riceve l’azione.","esempio":"Hon o yomu.","nota":"を read 'o'."}},"spiegazioniEn":{"o":{"descrizione":"Direct object particle.","uso":"Marks the direct object.","esempio":"Hon o yomu.","nota":"を read 'o'."}}},
-      {"italiano":"Tornare","english":"To return","romaji":"kaeru","frase":"Watashi wa uchi ni kaeru.","traduzioneIt":"Torno a casa.","traduzioneEn":"I return home.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica argomento.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."},"ni":{"descrizione":"Particella direzione.","uso":"Indica direzione.","esempio":"Tomodachi ni aimasu.","nota":"に read 'ni'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks topic.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."},"ni":{"descrizione":"Direction particle.","uso":"Indicates direction.","esempio":"Tomodachi ni aimasu.","nota":"に read 'ni'."}}},
-      {"italiano":"Venire","english":"To come","romaji":"kuru","frase":"Tomodachi ga kuru.","traduzioneIt":"L'amico viene.","traduzioneEn":"The friend comes.","spiegazioniIt":{"ga":{"descrizione":"Particella soggetto.","uso":"Indica il soggetto.","esempio":"Kare ga kimasu.","nota":"が read 'ga'."}},"spiegazioniEn":{"ga":{"descrizione":"Subject particle.","uso":"Marks the subject.","esempio":"Kare ga kimasu.","nota":"が read 'ga'."}}},
-      {"italiano":"Andare","english":"To go","romaji":"iku","frase":"Watashi wa gakko ni iku.","traduzioneIt":"Vado a scuola.","traduzioneEn":"I go to school.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica argomento.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."},"ni":{"descrizione":"Particella direzione.","uso":"Indica direzione.","esempio":"Tomodachi ni aimasu.","nota":"に read 'ni'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks topic.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."},"ni":{"descrizione":"Direction particle.","uso":"Marks direction.","esempio":"Tomodachi ni aimasu.","nota":"に read 'ni'."}}},
-      {"italiano":"Studiare","english":"To study","romaji":"benkyou","frase":"Watashi wa nihongo o benkyou suru.","traduzioneIt":"Studio giapponese.","traduzioneEn":"I study Japanese.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica argomento.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."},"o":{"descrizione":"Particella oggetto diretto.","uso":"Indica oggetto.","esempio":"Nihongo o benkyou suru.","nota":"を read 'o'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks topic.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."},"o":{"descrizione":"Direct object particle.","uso":"Marks object.","esempio":"Nihongo o benkyou suru.","nota":"を read 'o'."}}},
-      {"italiano":"Cucinare","english":"To cook","romaji":"ryouri","frase":"Watashi wa ryouri o suru.","traduzioneIt":"Cucino.","traduzioneEn":"I cook.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica argomento.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."},"o":{"descrizione":"Particella oggetto diretto.","uso":"Indica oggetto.","esempio":"Ryouri o suru.","nota":"を read 'o'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks topic.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."},"o":{"descrizione":"Direct object particle.","uso":"Marks object.","esempio":"Ryouri o suru.","nota":"を read 'o'."}}},
-      {"italiano":"Giocare","english":"To play","romaji":"asobu","frase":"Kodomo wa asobu.","traduzioneIt":"Il bambino gioca.","traduzioneEn":"The child plays.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica argomento.","esempio":"Kodomo wa asobu.","nota":"は read 'wa'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks topic.","esempio":"Kodomo wa asobu.","nota":"は read 'wa'."}}},
-      {"italiano":"Parlare","english":"To speak","romaji":"hanasu","frase":"Nihongo o hanasu.","traduzioneIt":"Parlo giapponese.","traduzioneEn":"I speak Japanese.","spiegazioniIt":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica oggetto.","esempio":"Nihongo o hanasu.","nota":"を read 'o'."}},"spiegazioniEn":{"o":{"descrizione":"Direct object particle.","uso":"Marks object.","esempio":"Nihongo o hanasu.","nota":"を read 'o'."}}},
-      {"italiano":"Fare","english":"To do","romaji":"suru","frase":"Watashi wa undou o suru.","traduzioneIt":"Faccio esercizio.","traduzioneEn":"I do exercise.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica argomento.","esempio":"Watashi wa undou o suru.","nota":"は read 'wa'."},"o":{"descrizione":"Particella oggetto diretto.","uso":"Indica oggetto.","esempio":"Undou o suru.","nota":"を read 'o'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks topic.","esempio":"Watashi wa undou o suru.","nota":"は read 'wa'."},"o":{"descrizione":"Direct object particle.","uso":"Marks object.","esempio":"Undou o suru.","nota":"を read 'o'."}}},
-      {"italiano":"Creare","english":"To create","romaji":"tsukuru","frase":"Watashi wa keeki o tsukuru.","traduzioneIt":"Preparo una torta.","traduzioneEn":"I make a cake.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica argomento.","esempio":"Watashi wa keeki o tsukuru.","nota":"は read 'wa'."},"o":{"descrizione":"Particella oggetto diretto.","uso":"Indica oggetto.","esempio":"Keeki o tsukuru.","nota":"を read 'o'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks topic.","esempio":"Watashi wa keeki o tsukuru.","nota":"は read 'wa'."},"o":{"descrizione":"Direct object particle.","uso":"Marks object.","esempio":"Keeki o tsukuru.","nota":"を read 'o'."}}},
-      {"italiano":"Guardare (formale)","english":"To watch (formal)","romaji":"mimasu","frase":"Anime o mimasu.","traduzioneIt":"Guardo anime (formale).","traduzioneEn":"I watch anime (formal).","spiegazioniIt":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica oggetto.","esempio":"Anime o mimasu.","nota":"を read 'o'."}},"spiegazioniEn":{"o":{"descrizione":"Direct object particle.","uso":"Marks object.","esempio":"Anime o mimasu.","nota":"を read 'o'."}}},
-      {"italiano":"Ascoltare (formale)","english":"To listen (formal)","romaji":"kikimasu","frase":"Ongaku o kikimasu.","traduzioneIt":"Ascolto musica (formale).","traduzioneEn":"I listen to music (formal).","spiegazioniIt":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica oggetto.","esempio":"Ongaku o kikimasu.","nota":"を read 'o'."}},"spiegazioniEn":{"o":{"descrizione":"Direct object particle.","uso":"Marks object.","esempio":"Ongaku o kikimasu.","nota":"を read 'o'."}}},
-      {"italiano":"Comprare","english":"To buy","romaji":"kaimasu","frase":"Kutsu o kaimasu.","traduzioneIt":"Compro scarpe.","traduzioneEn":"I buy shoes.","spiegazioniIt":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica oggetto.","esempio":"Kutsu o kaimasu.","nota":"を read 'o'."}},"spiegazioniEn":{"o":{"descrizione":"Direct object particle.","uso":"Marks object.","esempio":"Kutsu o kaimasu.","nota":"を read 'o'."}}},
-      {"italiano":"Incontrare","english":"To meet","romaji":"aimasu","frase":"Tomodachi ni aimasu.","traduzioneIt":"Incontro un amico.","traduzioneEn":"I meet a friend.","spiegazioniIt":{"ni":{"descrizione":"Particella di direzione.","uso":"Indica direzione.","esempio":"Tomodachi ni aimasu.","nota":"に read 'ni'."}},"spiegazioniEn":{"ni":{"descrizione":"Direction particle.","uso":"Marks direction.","esempio":"Tomodachi ni aimasu.","nota":"に read 'ni'."}}},
-      {"italiano":"Esistere (oggetti)","english":"To exist (objects)","romaji":"arimasu","frase":"Tsukue ga arimasu.","traduzioneIt":"C'è una scrivania.","traduzioneEn":"There is a desk.","spiegazioniIt":{"ga":{"descrizione":"Particella soggetto.","uso":"Indica soggetto.","esempio":"Tsukue ga arimasu.","nota":"が read 'ga'."}},"spiegazioniEn":{"ga":{"descrizione":"Subject particle.","uso":"Marks subject.","esempio":"Tsukue ga arimasu.","nota":"が read 'ga'."}}},
-      {"italiano":"Esistere (persone)","english":"To exist (people)","romaji":"imasu","frase":"Sensei ga imasu.","traduzioneIt":"C'è l'insegnante.","traduzioneEn":"There is a teacher.","spiegazioniIt":{"ga":{"descrizione":"Particella soggetto.","uso":"Indica soggetto.","esempio":"Sensei ga imasu.","nota":"が read 'ga'."}},"spiegazioniEn":{"ga":{"descrizione":"Subject particle.","uso":"Marks subject.","esempio":"Sensei ga imasu.","nota":"が read 'ga'."}}},
-      {"italiano":"Essere (formale)","english":"To be (formal)","romaji":"desu","frase":"Watashi wa gakusei desu.","traduzioneIt":"Sono uno studente.","traduzioneEn":"I am a student.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica argomento.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks topic.","esempio":"Watashi wa gakusei desu.","nota":"は read 'wa'."}}},
-      {"italiano":"Piace","english":"To like","romaji":"suki","frase":"Anime ga suki desu.","traduzioneIt":"Mi piacciono gli anime.","traduzioneEn":"I like anime.","spiegazioniIt":{"ga":{"descrizione":"Particella soggetto.","uso":"Indica soggetto.","esempio":"Anime ga suki desu.","nota":"が read 'ga'."}},"spiegazioniEn":{"ga":{"descrizione":"Subject particle.","uso":"Marks subject.","esempio":"Anime ga suki desu.","nota":"が read 'ga'."}}},
-      {"italiano":"Non piace","english":"To dislike","romaji":"kirai","frase":"Ebi ga kirai desu.","traduzioneIt":"Non mi piacciono i gamberi.","traduzioneEn":"I dislike shrimp.","spiegazioniIt":{"ga":{"descrizione":"Particella soggetto.","uso":"Indica soggetto.","esempio":"Ebi ga kirai desu.","nota":"が read 'ga'."}},"spiegazioniEn":{"ga":{"descrizione":"Subject particle.","uso":"Marks subject.","esempio":"Ebi ga kirai desu.","nota":"が read 'ga'."}}},
-      {"italiano":"Bravo in","english":"To be good at","romaji":"jouzu","frase":"Kare wa tenisu ga jouzu desu.","traduzioneIt":"Lui è bravo a tennis.","traduzioneEn":"He is good at tennis.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica argomento.","esempio":"Kare wa tenisu ga jouzu desu.","nota":"は read 'wa'."},"ga":{"descrizione":"Particella soggetto.","uso":"Indica soggetto.","esempio":"Kare wa tenisu ga jouzu desu.","nota":"が read 'ga'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks topic.","esempio":"Kare wa tenisu ga jouzu desu.","nota":"は read 'wa'."},"ga":{"descrizione":"Subject particle.","uso":"Marks subject.","esempio":"Kare wa tenisu ga jouzu desu.","nota":"が read 'ga'."}}},
-      {"italiano":"Scarso in","english":"To be bad at","romaji":"heta","frase":"Watashi wa dansu ga heta desu.","traduzioneIt":"Sono scarso nel ballo.","traduzioneEn":"I am bad at dancing.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica argomento.","esempio":"Watashi wa dansu ga heta desu.","nota":"は read 'wa'."},"ga":{"descrizione":"Particella soggetto.","uso":"Indica soggetto.","esempio":"Watashi wa dansu ga heta desu.","nota":"が read 'ga'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks topic.","esempio":"Watashi wa dansu ga heta desu.","nota":"は read 'wa'."},"ga":{"descrizione":"Subject particle.","uso":"Marks subject.","esempio":"Watashi wa dansu ga heta desu.","nota":"が read 'ga'."}}},
-      {"italiano":"Capire","english":"To understand","romaji":"wakaru","frase":"Nihongo ga wakaru.","traduzioneIt":"Capisco il giapponese.","traduzioneEn":"I understand Japanese.","spiegazioniIt":{"ga":{"descrizione":"Particella soggetto.","uso":"Indica soggetto.","esempio":"Nihongo ga wakaru.","nota":"が read 'ga'."}},"spiegazioniEn":{"ga":{"descrizione":"Subject particle.","uso":"Marks subject.","esempio":"Nihongo ga wakaru.","nota":"が read 'ga'."}}},
-      {"italiano":"Conoscere","english":"To know","romaji":"shiru","frase":"Kare o shiru.","traduzioneIt":"Lo conosco.","traduzioneEn":"I know him.","spiegazioniIt":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica oggetto.","esempio":"Kare o shiru.","nota":"を read 'o'."}},"spiegazioniEn":{"o":{"descrizione":"Direct object particle.","uso":"Marks direct object.","esempio":"Kare o shiru.","nota":"を read 'o'."}}},
-      {"italiano":"Memorizzare","english":"To memorise","romaji":"oboeru","frase":"Kotoba o oboeru.","traduzioneIt":"Memorizzo parole.","traduzioneEn":"I memorise words.","spiegazioniIt":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica oggetto.","esempio":"Kotoba o oboeru.","nota":"を read 'o'."}},"spiegazioniEn":{"o":{"descrizione":"Direct object particle.","uso":"Marks direct object.","esempio":"Kotoba o oboeru.","nota":"を read 'o'."}}},
-      {"italiano":"Dimenticare","english":"To forget","romaji":"wasuremasu","frase":"Namae o wasuremasu.","traduzioneIt":"Dimentico il nome.","traduzioneEn":"I forget the name.","spiegazioniIt":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica oggetto.","esempio":"Namae o wasuremasu.","nota":"を read 'o'."}},"spiegazioniEn":{"o":{"descrizione":"Direct object particle.","uso":"Marks direct object.","esempio":"Namae o wasuremasu.","nota":"を read 'o'."}}},
-      {"italiano":"Essere capace","english":"To be able","romaji":"dekiru","frase":"Watashi wa eigo ga dekiru.","traduzioneIt":"So parlare inglese.","traduzioneEn":"I can speak English.","spiegazioniIt":{"wa":{"descrizione":"Particella del tema.","uso":"Indica argomento.","esempio":"Watashi wa eigo ga dekiru.","nota":"は read 'wa'."},"ga":{"descrizione":"Particella soggetto.","uso":"Indica soggetto.","esempio":"Watashi wa eigo ga dekiru.","nota":"が read 'ga'."}},"spiegazioniEn":{"wa":{"descrizione":"Topic particle.","uso":"Marks topic.","esempio":"Watashi wa eigo ga dekiru.","nota":"は read 'wa'."},"ga":{"descrizione":"Subject particle.","uso":"Marks subject.","esempio":"Watashi wa eigo ga dekiru.","nota":"が read 'ga'."}}},
-      {"italiano":"Fare (casual)","english":"To do (casual)","romaji":"yaru","frase":"Sugu yaru.","traduzioneIt":"Lo faccio subito.","traduzioneEn":"I’ll do it right away.","spiegazioniIt":{},"spiegazioniEn":{}},
-      {"italiano":"Lavare","english":"To wash","romaji":"arau","frase":"Te o arau.","traduzioneIt":"Lavo le mani.","traduzioneEn":"I wash my hands.","spiegazioniIt":{"o":{"descrizione":"Particella dell’oggetto diretto.","uso":"Indica oggetto.","esempio":"Te o arau.","nota":"を read 'o'."}},"spiegazioniEn":{"o":{"descrizione":"Direct object particle.","uso":"Marks direct object.","esempio":"Te o arau.","nota":"を read 'o'."}}}
+      { "emoji":"🍚","italiano":"Mangiare","english":"To eat","romaji":"taberu", /* … */ },
+      { "emoji":"🎬","italiano":"Guardare","english":"To watch","romaji":"miru", /* … */ },
+      { "emoji":"🎧","italiano":"Ascoltare","english":"To listen","romaji":"kiku", /* … */ },
+      { "emoji":"🥤","italiano":"Bere","english":"To drink","romaji":"nomu", /* … */ },
+      /* aggiungi qui le altre 31 parole nello stesso formato */
     ];
 
     let index = 0;
+    const sidebar = document.getElementById("paroleSidebar");
+    const langSelect = document.getElementById("langSelect");
+
+    function popolaSidebar() {
+      sidebar.innerHTML = "";
+      data.forEach(({ emoji, romaji, italiano }) => {
+        const li = document.createElement("li");
+        li.innerHTML = `${emoji} <span class="blur">${romaji}</span> – ${italiano}`;
+        sidebar.appendChild(li);
+      });
+    }
 
     function loadQuestion() {
-      const lang = document.getElementById("langSelect").value;
+      const lang = langSelect.value;
       document.getElementById("userInput").value = "";
       document.getElementById("result").innerHTML = "";
       document.getElementById("spiegazioni").innerHTML = "";
       if (index < data.length) {
-        const word = lang === "italiano" ? data[index].italiano : data[index].english;
+        const w = data[index];
+        const word = lang==="italiano"? w.italiano : w.english;
         document.getElementById("question").innerHTML =
-          `<strong>Translate (${lang} → romaji):</strong> ${word}`;
+          `${w.emoji} <strong>Translate (${lang}→romaji):</strong> ${word}`;
       } else {
         document.getElementById("question").innerHTML = "Hai completato il quiz!";
         document.querySelector(".input-group").style.display = "none";
@@ -143,45 +110,55 @@
     }
 
     function checkAnswer() {
-      const lang = document.getElementById("langSelect").value;
+      const lang = langSelect.value;
       const input = document.getElementById("userInput").value.trim().toLowerCase();
-      const correct = data[index].romaji.toLowerCase();
-      if (input === correct) {
-        let result = `<strong>Frase:</strong><br>${data[index].frase}<br>`;
-        result += `<em>${lang==="italiano"?data[index].traduzioneIt:data[index].traduzioneEn}</em><br>`;
-        document.getElementById("result").innerHTML = result;
+      const w = data[index];
+      if (input === w.romaji) {
+        // highlight emoji
+        const q = document.getElementById("question");
+        q.classList.add("highlight");
+        setTimeout(()=> q.classList.remove("highlight"), 500);
 
-        const key = lang==="italiano"?"spiegazioniIt":"spiegazioniEn";
-        const spieg = data[index][key]||{};
+        // mostra frase + traduzione
+        document.getElementById("result").innerHTML =
+          `<strong>${w.emoji} Frase:</strong><br>${w.frase}<br>` +
+          `<em>${lang==="italiano"? w.traduzioneIt : w.traduzioneEn}</em>`;
+        // spiegazioni …
+        const key = lang==="italiano" ? "spiegazioniIt" : "spiegazioniEn";
+        const spieg = w[key] || {};
         let html = "";
-        for (let part in spieg) {
-          const s = spieg[part];
-          html += `<div class='explanation'><strong>${part}</strong><br>`;
-          html += `<em><strong>${lang==="italiano"?"Descrizione":"Description"}:</strong></em> ${s.descrizione}<br>`;
-          html += `<em><strong>${lang==="italiano"?"Uso":"Usage"}:</strong></em> ${s.uso}<br>`;
-          html += `<em><strong>${lang==="italiano"?"Esempio":"Example"}:</strong></em> ${s.esempio}<br>`;
-          html += `<em><strong>${lang==="italiano"?"Nota":"Note"}:</strong></em> ${s.nota}</div>`;
+        for (let p in spieg) {
+          const s = spieg[p];
+          html += `<div class="explanation"><strong>${p}</strong><br>` +
+                  `<em><strong>${lang==="italiano"?"Descrizione":"Description"}:</strong></em> ${s.descrizione}<br>` +
+                  `<em><strong>${lang==="italiano"?"Uso":"Usage"}:</strong></em> ${s.uso}<br>` +
+                  `<em><strong>${lang==="italiano"?"Esempio":"Example"}:</strong></em> ${s.esempio}<br>` +
+                  `<em><strong>${lang==="italiano"?"Nota":"Note"}:</strong></em> ${s.nota}</div>`;
         }
         document.getElementById("spiegazioni").innerHTML = html;
       } else {
         document.getElementById("result").innerHTML =
-          "<span style='color:red;'>✗ Risposta sbagliata. Riprova.</span>";
+          `<span style="color:red;">✗ ${lang==="italiano"? "Risposta sbagliata. Riprova." : "Wrong answer. Try again."}</span>`;
       }
     }
 
-    document.getElementById("langSelect").addEventListener("change", () => {
-      index = 0;
-      loadQuestion();
-    });
+    langSelect.addEventListener("change", () => { index = 0; loadQuestion(); });
     document.getElementById("userInput").addEventListener("keydown", e => {
-      if (e.key === "Enter") checkAnswer();
+      if (e.key==="Enter") checkAnswer();
     });
     document.addEventListener("keydown", e => {
-      if      (e.key.toLowerCase()==="q")      { if (index<data.length-1) index++; loadQuestion(); }
-      else if (e.key==="ArrowRight")             { if (index<data.length-1) index++; loadQuestion(); }
-      else if (e.key==="ArrowLeft")              { if (index>0) index--; loadQuestion(); }
+      if (e.key.toLowerCase()==="q" || e.key==="ArrowRight") {
+        if (index < data.length-1) index++;
+        loadQuestion();
+      }
+      if (e.key==="ArrowLeft" && index>0) {
+        index--;
+        loadQuestion();
+      }
     });
 
+    // init
+    popolaSidebar();
     window.onload = loadQuestion;
   </script>
 </body>
